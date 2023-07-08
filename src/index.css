@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.popup-content {
+  @apply bg-white w-3/4 lg:w-1/3 rounded-md;
+}
+.popup-overlay {
+  background: rgba(0, 0, 0, 0.5);
+}

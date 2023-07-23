@@ -8,7 +8,6 @@ import {
 } from "react-icons/fa";
 import MobileNav from "../layout/MobileNav.jsx";
 import { useDispatch, useSelector } from "react-redux";
-import { authLogout } from "../../api/api.js";
 import { logoutAction } from "../../store/authSlice.js";
 import { Link, useNavigate } from "react-router-dom";
 import { openPopupAction } from "../../store/uiSlice.js";
@@ -16,8 +15,6 @@ import { openPopupAction } from "../../store/uiSlice.js";
 export default function Headerr() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
-  const navigate = useNavigate();
-  const [actionButtonLoader, setActionButtonLoader] = useState(false);
 
   const [sidebarToggle, setSidebarToggle] = useState(false);
   const handleSidebarToggle = () => {
@@ -25,38 +22,7 @@ export default function Headerr() {
   };
 
   const handleLogout = async () => {
-    setActionButtonLoader(true);
-    try {
-      const {
-        data: { status, msg },
-      } = await authLogout();
-      console.log("log status", status);
-      console.log("log msg", msg);
-      if (status) {
-        dispatch(logoutAction());
-        navigate("/login");
-      } else {
-        console.log(msg);
-        dispatch(
-          openPopupAction({
-            type: "danger",
-            title: "Failed!",
-            text: "Can't logout right now.",
-          })
-        );
-      }
-    } catch (e) {
-      console.log(e.message);
-      dispatch(
-        openPopupAction({
-          type: "danger",
-          title: "Failed!",
-          text: "Can't logout right now. catch",
-        })
-      );
-    } finally {
-      setActionButtonLoader(false);
-    }
+    dispatch(logoutAction());
   };
 
   return (
@@ -111,7 +77,10 @@ export default function Headerr() {
             <li>
               <Link to="/dashboard/profile">
                 <FaRegUserCircle className="text-bodydark2 inline" />
-                <span className="text-bodydark2"> {user.name}</span>
+                <span className="text-bodydark2">
+                  {" "}
+                  {user.first_name} {user.last_name}
+                </span>
               </Link>
             </li>
             <li>
@@ -119,13 +88,8 @@ export default function Headerr() {
                 type="button"
                 className="text-bodydark2"
                 onClick={handleLogout}
-                disabled={actionButtonLoader}
               >
-                {actionButtonLoader ? (
-                  <FaSpinner className="inline animate-spin" />
-                ) : (
-                  <FaSignOutAlt className="inline" />
-                )}{" "}
+                <FaSignOutAlt className="inline" />
                 Logout
               </button>
             </li>

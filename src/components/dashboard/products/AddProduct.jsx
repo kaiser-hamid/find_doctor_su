@@ -1,11 +1,7 @@
 import { FaSave, FaSpinner } from "react-icons/fa";
 import SelectWithSearch from "../../ui/SelectWithSearch";
 import { useEffect, useState } from "react";
-import {
-  csrfCookie,
-  productAddFormHelperData,
-  productSave,
-} from "../../../api/api.js";
+import { productAddFormHelperData, productSave } from "../../../api/api.js";
 import SubmitNotification from "../../ui/SubmitNotification.jsx";
 import HOC from "../../hoc/HOC.jsx";
 import { useNavigate } from "react-router-dom";
@@ -73,7 +69,6 @@ export function AddProduct() {
   const handleSubmit = async () => {
     setActionButtonLoading(true);
     try {
-      await csrfCookie();
       const form_data = new FormData();
       for (const item in formData) {
         form_data.append(`${item}`, formData[item]);

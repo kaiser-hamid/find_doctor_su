@@ -2,7 +2,6 @@ import { FaSave, FaSpinner } from "react-icons/fa";
 import SelectWithSearch from "../../ui/SelectWithSearch";
 import { useEffect, useState } from "react";
 import {
-  csrfCookie,
   productEditFormHelperData,
   productSave,
   productUpdate,
@@ -81,7 +80,6 @@ export function EditProduct() {
   const handleSubmit = async () => {
     setActionButtonLoading(true);
     try {
-      await csrfCookie();
       const form_data = new FormData();
       for (const item in formData) {
         form_data.append(`${item}`, formData[item]);

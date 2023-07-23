@@ -1,7 +1,7 @@
 import { FaSpinner, FaSync } from "react-icons/fa";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { authPasswordChange, csrfCookie } from "../../../api/api.js";
+import { authPasswordChange } from "../../../api/api.js";
 import SubmitNotification from "../../ui/SubmitNotification";
 import Validator from "../../../validation/Validator.js";
 import { editProfileRules } from "../../../validation/rules.js";
@@ -42,7 +42,6 @@ export function EditProfileForm() {
         return;
       }
 
-      await csrfCookie();
       const form_data = new FormData();
       for (const item in formData) {
         form_data.append(`${item}`, formData[item]);

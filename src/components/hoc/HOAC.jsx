@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loginAction } from "../../store/authSlice.js";
 import PageLoader from "../ui/PageLoader.jsx";
-import { authCheck, csrfCookie } from "../../api/api.js";
+import { authCheck } from "../../api/api.js";
 
 const HOAC = ({ children }) => {
   const isAuthCheck = useSelector((state) => state.auth.isAuthCheck);
@@ -11,14 +11,13 @@ const HOAC = ({ children }) => {
   useEffect(() => {
     const checkUser = async () => {
       try {
-        await csrfCookie();
         const {
           data: { status, data: user },
         } = await authCheck();
         if (status) {
           dispatch(loginAction({ status, user }));
         } else {
-          dispatch(loginAction({ status }));
+          dispatch(loginAction({ status: false }));
         }
       } catch (e) {
         console.log(e.message);

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { csrfCookie, login } from "../../api/api.js";
+import { login } from "../../api/api.js";
 import { FaEnvelope, FaKey, FaSpinner } from "react-icons/fa";
 import LoginRightContent from "./LoginRightContent.jsx";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,6 +10,7 @@ import HOLC from "../hoc/HOLC.jsx";
 import Validator from "../../validation/Validator.js";
 import { loginRules } from "../../validation/rules.js";
 import { openPopupAction } from "../../store/uiSlice.js";
+import http from "../../Axios.js";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -18,11 +19,7 @@ const Login = () => {
     if (isAuthenticated) {
       navigate("/dashboard");
     }
-  }, []);
-
-  useEffect(() => {
-    console.log("mounted: login");
-  }, []);
+  }, [isAuthenticated]);
 
   const dispatch = useDispatch();
 
@@ -55,7 +52,6 @@ const Login = () => {
         return;
       }
 
-      await csrfCookie();
       const form_data = new FormData();
       for (const item in formData) {
         form_data.append(`${item}`, formData[item]);
@@ -64,8 +60,9 @@ const Login = () => {
         data: { status, data, msg },
       } = await login(form_data);
       if (status) {
-        dispatch(loginAction({ status, user: data }));
-        navigate("/dashboard");
+        localStorage.setItem("admin_token", data.token);
+        http.defaults.headers.Authorization = `Bearer ${data.token}`;
+        dispatch(loginAction({ status, user: data.user }));
       } else {
         setNotification({ msg, type: "danger" });
       }

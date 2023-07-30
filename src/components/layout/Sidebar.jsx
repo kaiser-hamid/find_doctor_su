@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FaList } from "react-icons/fa";
+import { FaClinicMedical, FaPlus, FaStethoscope } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 export default function Sidebar() {
@@ -27,66 +27,54 @@ export default function Sidebar() {
         <nav className="mt-5 py-4 px-4 lg:mt-9 lg:px-6">
           <div>
             <h3 className="mb-4 ml-4 text-sm font-medium text-bodydark2 text-white">
-              Stock Management
+              Doctor Management
             </h3>
 
             <ul className="mb-6 flex flex-col gap-1.5 pl-6">
-              {/* Menu Item Form Elements */}
               <li>
                 <Link
                   className="group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark2 dark:text-textdark2 transition-colors"
-                  to="products"
+                  to="/dashboard/doctors/add"
                 >
-                  <FaList />
-                  <span>Products</span>
+                  <FaPlus />
+                  <span>Add a Doctor</span>
                 </Link>
               </li>
-              {/* Menu Item Form Elements */}
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="mb-4 ml-4 text-sm font-medium text-bodydark2 text-white">
-              Company Management
-            </h3>
-
-            <ul className="mb-6 flex flex-col gap-1.5 pl-6">
-              {/* Menu Item Form Elements */}
               <li>
-                <a
+                <Link
                   className="group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark2 dark:text-textdark2 transition-colors"
-                  href="#"
+                  to="/dashboard/doctors"
                 >
-                  <FaList />
-                  <span>Companies</span>
-                </a>
+                  <FaStethoscope />
+                  <span>Doctors</span>
+                </Link>
               </li>
-              {/* Menu Item Form Elements */}
             </ul>
           </div>
-
           <div>
             <h3 className="mb-4 ml-4 text-sm font-medium text-bodydark2 text-white">
-              Employee Management
+              Chamber Management
             </h3>
 
             <ul className="mb-6 flex flex-col gap-1.5 pl-6">
-              {/* Menu Item Chart */}
               <li>
-                <a
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark2 dark:text-textdark2 transition-colors ${
-                    selected === "Dashboard"
-                      ? "bg-green-800 dark:bg-green-700"
-                      : ""
-                  }`}
-                  href="#"
-                  onClick={() => handleMenuClick("Dashboard")}
+                <Link
+                  className="group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark2 dark:text-textdark2 transition-colors"
+                  to="/dashboard/chambers/add"
                 >
-                  <FaList />
-                  <span>Employees</span>
-                </a>
+                  <FaPlus />
+                  <span>Add a Chamber</span>
+                </Link>
               </li>
-              {/* Menu Item Chart */}
+              <li>
+                <Link
+                  className="group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark2 dark:text-textdark2 transition-colors"
+                  to="/dashboard/chambers"
+                >
+                  <FaClinicMedical />
+                  <span>Chambers</span>
+                </Link>
+              </li>
             </ul>
           </div>
         </nav>

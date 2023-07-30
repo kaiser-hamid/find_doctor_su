@@ -2,12 +2,15 @@ import { createBrowserRouter } from "react-router-dom";
 import Login from "./components/auth/Login.jsx";
 import Dashboard from "./components/dashboard/Dashboard.jsx";
 import Root from "./components/dashboard/Root.jsx";
-import Products from "./components/dashboard/products/Products";
-import { AddProduct } from "./components/dashboard/products/AddProduct";
+import Doctors from "./components/dashboard/doctors/Doctors";
+import { AddDoctor } from "./components/dashboard/doctors/AddDoctor";
+import { EditDoctor } from "./components/dashboard/doctors/EditDoctor";
 import HOAC from "./components/hoc/HOAC.jsx";
 import Profile from "./components/dashboard/profile/Profile";
 import { EditProfileForm } from "./components/dashboard/profile/EditProfileForm";
-import { EditProduct } from "./components/dashboard/products/EditProduct";
+import { AddChamber } from "./components/dashboard/chambers/AddChamber.jsx";
+import Chambers from "./components/dashboard/chambers/Chambers.jsx";
+import { EditChamber } from "./components/dashboard/chambers/EditChamber.jsx";
 
 export default createBrowserRouter([
   {
@@ -39,24 +42,36 @@ export default createBrowserRouter([
         element: <Dashboard />,
       },
       {
-        path: "products",
-        element: <Products />,
-      },
-      {
-        path: "products/add",
-        element: <AddProduct />,
-      },
-      {
-        path: "products/:id/edit",
-        element: <EditProduct />,
-      },
-      {
         path: "profile",
         element: <Profile />,
       },
       {
         path: "profile/edit",
         element: <EditProfileForm />,
+      },
+      {
+        path: "doctors",
+        element: <Doctors />,
+      },
+      {
+        path: "doctors/add",
+        element: <AddDoctor />,
+      },
+      {
+        path: "doctors/:id/edit",
+        element: <EditDoctor />,
+      },
+      {
+        path: "chambers",
+        element: <Chambers />,
+      },
+      {
+        path: "chambers/add",
+        element: <AddChamber />,
+      },
+      {
+        path: "chambers/:id/edit",
+        element: <EditChamber />,
       },
     ],
   },

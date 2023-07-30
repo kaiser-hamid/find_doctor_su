@@ -3,10 +3,11 @@ import { Link } from "react-router-dom";
 import { FaEdit, FaPlus, FaTrash } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import HOC from "../../hoc/HOC.jsx";
-import { products } from "../../../api/api.js";
+import { doctors } from "../../../api/api.js";
 import { openPopupAction } from "../../../store/uiSlice";
+import { useDispatch } from "react-redux";
 
-export default function Products() {
+export default function Chambers() {
   const dispatch = useDispatch();
   const [pageLoaded, setPageLoaded] = useState(false);
   const [pageData, setPageData] = useState(null);
@@ -16,7 +17,7 @@ export default function Products() {
       try {
         const {
           data: { status, data },
-        } = await products();
+        } = await doctors();
         if (status) {
           setPageData(data);
         }
@@ -42,7 +43,7 @@ export default function Products() {
         <div className="max-w-screen-2xl mx-auto p-4 md:p-6 2xl:p-10">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
             <h2 className="font-semibold text-title-md2 text-black dark:text-white">
-              Products List
+              Doctors List
             </h2>
 
             <div>
@@ -50,7 +51,7 @@ export default function Products() {
                 to="add"
                 className="inline-flex items-center justify-center rounded-md bg-black py-4 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
               >
-                <FaPlus /> Add Product
+                <FaPlus /> Add Doctor
               </Link>
             </div>
           </div>
@@ -79,32 +80,32 @@ export default function Products() {
                     </tr>
                   </thead>
                   <tbody>
-                    {pageData?.map((product) => (
-                      <tr key={product.id}>
+                    {pageData?.map((doctor) => (
+                      <tr key={doctor.id}>
                         <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
                           <h5 className="font-medium text-black dark:text-white">
-                            {product.title}
+                            {doctor.title}
                           </h5>
                         </td>
                         <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                           <p className="text-black dark:text-white">
-                            {product.company_title}
+                            {doctor.company_title}
                           </p>
                         </td>
                         <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                           <p className="text-black dark:text-white">
-                            {product.unit}
+                            {doctor.unit}
                           </p>
                         </td>
                         <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                           <p className="text-black dark:text-white font-semibold">
-                            {product.price}
+                            {doctor.price}
                           </p>
                         </td>
                         <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                           <div className="flex items-center justify-center space-x-3.5">
                             <Link
-                              to={`${product.id}/edit`}
+                              to={`${doctor.id}/edit`}
                               className="inline-flex items-center justify-center rounded-md bg-primary px-5 py-2 text-center font-medium text-white hover:bg-opacity-90"
                             >
                               <FaEdit className="inline" /> Edit

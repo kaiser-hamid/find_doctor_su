@@ -1,16 +1,22 @@
 import { FaSave, FaSpinner } from "react-icons/fa";
 import SelectWithSearch from "../../ui/SelectWithSearch";
 import { useEffect, useState } from "react";
-import { productAddFormHelperData, productSave } from "../../../api/api.js";
+import {
+  doctorEditFormHelperData,
+  doctorSave,
+  doctorUpdate,
+} from "../../../api/api.js";
 import SubmitNotification from "../../ui/SubmitNotification.jsx";
 import HOC from "../../hoc/HOC.jsx";
-import { useNavigate } from "react-router-dom";
-import { UNITOPTIONS } from "../../../helpers/form-helper.jsx";
-import { openPopupAction } from "../../../store/uiSlice";
+import { useNavigate, useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { chamberSericeOptions } from "../../../helpers/form-helper";
 
-export function AddProduct() {
+export function EditDoctor() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { id } = useParams();
+
   const initFormData = {
     company_id: "",
     title: "",
@@ -32,9 +38,14 @@ export function AddProduct() {
       try {
         const {
           data: { status, data, msg },
-        } = await productAddFormHelperData();
+        } = await doctorEditFormHelperData(id);
         if (status) {
           setCompanyOptions(data.companyOptions);
+          const formDataFromServer = {};
+          for (const item in formData) {
+            formDataFromServer[item] = data?.doctorData[item];
+          }
+          setFormData(formDataFromServer);
         } else {
           dispatch(
             openPopupAction({
@@ -50,7 +61,7 @@ export function AddProduct() {
           openPopupAction({
             type: "danger",
             title: "Failed!",
-            text: "Cannot load data",
+            text: "Data can't be loaded right now",
           })
         );
       } finally {
@@ -58,7 +69,7 @@ export function AddProduct() {
       }
     };
     fetchForHelperData();
-  }, []);
+  }, [id]);
 
   const handleInput = ({ target: { name, value } }) => {
     setFormData((prevState) => {
@@ -75,11 +86,11 @@ export function AddProduct() {
       }
       const {
         data: { status, msg },
-      } = await productSave(form_data);
+      } = await doctorUpdate(form_data, id);
       if (status) {
         setNotification({ msg, type: "success" });
         setTimeout(() => {
-          navigate("/dashboard/products");
+          navigate("/dashboard/doctors");
         }, 3000);
       } else {
         setNotification({ msg, type: "danger" });
@@ -98,14 +109,14 @@ export function AddProduct() {
         <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
           <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <h2 className="text-title-md2 font-bold text-black dark:text-white">
-              Add Product
+              Edit Doctor
             </h2>
           </div>
           <div className="flex flex-col gap-9">
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
                 <h3 className="font-semibold text-black dark:text-white">
-                  Product Form
+                  Doctor Form
                 </h3>
               </div>
               <form action="#">
@@ -170,7 +181,7 @@ export function AddProduct() {
                         name="unit"
                         value={formData.unit}
                         onChange={handleInput}
-                        options={UNITOPTIONS}
+                        options={chamberSericeOptions}
                       />
                     </div>
 
@@ -200,7 +211,7 @@ export function AddProduct() {
                       ) : (
                         <FaSave />
                       )}
-                      <span className="px-2">Save</span>
+                      <span className="px-2">Update</span>
                     </button>
                   </div>
                 </div>

@@ -29,6 +29,7 @@ export const chamberSave = (data) =>
   http.post("admin/chambers", data, {
     headers: { "Content-Type": "multipart/form-data" },
   });
+export const removeChamber = (id) => http.delete(`admin/chambers/${id}`);
 export const chamberAddFormHelperData = () =>
   http.get("admin/chamber/form-helper-data");
 export const chamberEditFormHelperData = (id) =>

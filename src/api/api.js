@@ -29,13 +29,15 @@ export const chamberSave = (data) =>
   http.post("admin/chambers", data, {
     headers: { "Content-Type": "multipart/form-data" },
   });
+export const chamberUpdate = (data, id) =>
+  http.put(`admin/chambers/${id}/update`, data, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
 export const removeChamber = (id) => http.delete(`admin/chambers/${id}`);
 export const chamberAddFormHelperData = () =>
   http.get("admin/chamber/form-helper-data");
 export const chamberEditFormHelperData = (id) =>
   http.get(`admin/chambers/${id}/edit`);
-export const productUpdate = (data, id) =>
-  http.post(`admin/chambers/${id}/update`, data);
 
 //Utility
 export const divisionDropdown = () => http.get("division-options");

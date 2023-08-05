@@ -5,3 +5,10 @@ export const parsePickerDate = (inputDate) => {
   }
   return "";
 };
+
+export const getSelectedDrodownItems = (dropdownOptions, selectedItems) => {
+  const result = dropdownOptions.filter((item) =>
+    selectedItems.includes(item.value)
+  );
+  return result;
+};

@@ -94,10 +94,7 @@ export default function Chambers() {
                   <thead>
                     <tr className="bg-gray-2 text-left dark:bg-meta-4">
                       <th className="min-w-[220px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
-                        Logo
-                      </th>
-                      <th className="min-w-[220px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
-                        Name
+                        Chamber
                       </th>
                       <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
                         Contact Details
@@ -113,19 +110,17 @@ export default function Chambers() {
                   <tbody>
                     {pageData?.map((chamber) => (
                       <tr key={chamber._id}>
-                        <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                          <h5 className="font-medium text-black dark:text-white">
+                        <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                          <div className="flex justify-between items-start">
                             <img
                               src={chamber.logo}
                               alt="Logo"
-                              className="h-16 rounded-md"
+                              className="h-8 rounded-md"
                             />
-                          </h5>
-                        </td>
-                        <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                          <p className="text-black dark:text-white">
-                            {chamber.name}
-                          </p>
+                            <span className="text-black font-semibold dark:text-white">
+                              {chamber.name}
+                            </span>
+                          </div>
                         </td>
                         <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                           <p className="text-black dark:text-white">
@@ -147,7 +142,7 @@ export default function Chambers() {
                         <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                           <div className="flex items-center justify-center space-x-3.5">
                             <Link
-                              to={`${chamber.id}/edit`}
+                              to={`${chamber._id}/edit`}
                               className="inline-flex items-center justify-center rounded-md bg-primary px-5 py-2 text-center font-medium text-white hover:bg-opacity-90"
                             >
                               <FaEdit className="inline" /> Edit

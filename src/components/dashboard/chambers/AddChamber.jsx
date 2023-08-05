@@ -52,6 +52,10 @@ export function AddChamber() {
   const [actionButtonLoading, setActionButtonLoading] = useState(false);
   const [notification, setNotification] = useState({ msg: null, type: null }); //[danger,success]
   const [pageLoaded, setPageLoaded] = useState(true);
+  const [preview, setPreview] = useState({
+    image_preview: null,
+    logo_preview: null,
+  });
 
   //dropdowns
   const [divisionOptions, setDivisionOptions] = useState([7657]);
@@ -103,6 +107,13 @@ export function AddChamber() {
   const handleInputFile = ({ target: { name, files } }) => {
     setFormData((prevState) => {
       return { ...prevState, [name]: files[0] };
+    });
+
+    //preview
+    const dataUrl = URL.createObjectURL(files[0]);
+    const previewAttribute = `${name}_preview`;
+    setPreview((prev) => {
+      return { ...prev, [previewAttribute]: dataUrl };
     });
   };
 
@@ -186,7 +197,7 @@ export function AddChamber() {
         setNotification({ msg, type: "success" });
         setTimeout(() => {
           navigate("/dashboard/chambers");
-        }, 3000);
+        }, 2000);
       } else {
         setNotification({ msg, type: "danger" });
       }
@@ -311,6 +322,15 @@ export function AddChamber() {
                         onChange={handleInputFile}
                         className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                       />
+                      {preview.logo_preview && (
+                        <div className="py-2">
+                          <img
+                            src={preview.logo_preview}
+                            alt="Logo"
+                            className="h-20 w-auto rounded-sm"
+                          />
+                        </div>
+                      )}
                     </div>
 
                     <div className="mb-4.5">
@@ -323,6 +343,15 @@ export function AddChamber() {
                         onChange={handleInputFile}
                         className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                       />
+                      {preview.image_preview && (
+                        <div className="py-2">
+                          <img
+                            src={preview.image_preview}
+                            alt="Image"
+                            className="h-20 w-auto rounded-sm"
+                          />
+                        </div>
+                      )}
                     </div>
 
                     <div className="mb-4.5">

@@ -231,6 +231,7 @@ export function EditChamber() {
 
   const handleSubmit = async () => {
     setActionButtonLoading(true);
+    setNotification({ msg: null, type: null });
     try {
       const form_data = parseFormData();
       const {

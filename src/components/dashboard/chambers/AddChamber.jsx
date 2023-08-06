@@ -188,11 +188,13 @@ export function AddChamber() {
 
   const handleSubmit = async () => {
     setActionButtonLoading(true);
+    setNotification({ msg: null, type: null });
     try {
       const form_data = parseFormData();
       const {
         data: { status, msg },
       } = await chamberSave(form_data);
+      console.log(status, msg);
       if (status) {
         setNotification({ msg, type: "success" });
         setTimeout(() => {

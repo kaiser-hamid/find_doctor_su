@@ -1,13 +1,5 @@
-import Table from "../../layout/Table";
 import { Link } from "react-router-dom";
-import {
-  FaEdit,
-  FaPlus,
-  FaTrash,
-  FaTrashAlt,
-  FaTrashRestore,
-  FaTrashRestoreAlt,
-} from "react-icons/fa";
+import { FaEdit, FaPlus, FaTrashAlt } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import HOC from "../../hoc/HOC.jsx";
 import { chambers, doctors, removeChamber } from "../../../api/api.js";

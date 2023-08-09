@@ -103,27 +103,34 @@ export default function Chambers() {
                     {pageData?.map((chamber) => (
                       <tr key={chamber._id}>
                         <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                          <div className="flex justify-between items-start">
-                            <img
-                              src={chamber.logo}
-                              alt="Logo"
-                              className="h-8 rounded-md"
-                            />
-                            <span className="text-black font-semibold dark:text-white">
-                              {chamber.name}
+                          <p className="text-black dark:text-white font-semibold">
+                            {chamber.name} <br />
+                            <span className="text-xs text-bodydark2">
+                              Phone:{" "}
+                              <a
+                                href={`tel:${chamber.phone}`}
+                                className="text-primary"
+                              >
+                                {chamber.phone}
+                              </a>
                             </span>
-                          </div>
+                          </p>
                         </td>
                         <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                           <p className="text-black dark:text-white">
-                            Address: {chamber.address.en}
+                            Address: {chamber.address}
                             <br />
                             Email: {chamber.email}
                             <br />
-                            Phone: {chamber.phone}
-                            <br />
-                            Website: {chamber.website}
-                            <br />
+                            Website:{" "}
+                            <a
+                              href={chamber.website}
+                              className="text-primary"
+                              target="_blank"
+                            >
+                              {" "}
+                              {chamber.website}
+                            </a>
                           </p>
                         </td>
                         <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">

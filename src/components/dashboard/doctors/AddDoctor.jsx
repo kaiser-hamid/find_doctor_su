@@ -298,17 +298,15 @@ export function AddDoctor() {
                         Gender
                       </label>
                       <div className="md:flex md:gap-4" onChange={handleInput}>
-                        <RadioButton label="Male" name="gender" value="male" />
-                        <RadioButton
-                          label="Female"
-                          name="gender"
-                          value="female"
-                        />
-                        <RadioButton
-                          label="Others"
-                          name="gender"
-                          value="others"
-                        />
+                        {["Male", "Female", "Others"].map((g) => (
+                          <RadioButton
+                            key={g}
+                            label={g}
+                            name="gender"
+                            value={g.toLowerCase()}
+                            selectedValue={formData.gender}
+                          />
+                        ))}
                       </div>
                     </div>
 

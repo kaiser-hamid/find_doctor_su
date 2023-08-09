@@ -35,8 +35,15 @@ export const doctorSave = (data) =>
   http.post("admin/doctors", data, {
     headers: { "Content-Type": "multipart/form-data" },
   });
+export const doctorUpdate = (data, id) =>
+  http.put(`admin/doctors/${id}/update`, data, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+export const removeDoctor = (id) => http.delete(`admin/doctors/${id}`);
 export const doctorAddFormHelperData = () =>
   http.get("admin/doctor/form-helper-data");
+export const doctorEditFormHelperData = (id) =>
+  http.get(`admin/doctors/${id}/edit`);
 
 //Utility
 export const divisionDropdown = () => http.get("division-options");

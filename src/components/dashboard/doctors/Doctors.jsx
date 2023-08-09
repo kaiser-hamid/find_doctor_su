@@ -9,7 +9,12 @@ import {
 } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import HOC from "../../hoc/HOC.jsx";
-import { chambers, doctors, removeChamber } from "../../../api/api.js";
+import {
+  chambers,
+  doctors,
+  removeChamber,
+  removeDoctor,
+} from "../../../api/api.js";
 import { openPopupAction } from "../../../store/uiSlice";
 import { useDispatch } from "react-redux";
 
@@ -50,7 +55,7 @@ export default function Doctors() {
       setPageData(restPageData);
       const {
         data: { status },
-      } = await removeChamber(id);
+      } = await removeDoctor(id);
       if (!status) {
         setPageData(tempPageData);
       }
@@ -143,7 +148,13 @@ export default function Doctors() {
                             <br />
                             Email: {doctor.email}
                             <br />
-                            Phone: {doctor.phone}
+                            Phone:{" "}
+                            <a
+                              href={`tel:${doctor.phone}`}
+                              className="text-primary"
+                            >
+                              {doctor.phone}
+                            </a>
                           </p>
                         </td>
 

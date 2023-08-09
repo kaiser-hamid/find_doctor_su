@@ -1,23 +1,12 @@
 import { FaSave, FaSpinner } from "react-icons/fa";
-import SelectWithSearch from "../../ui/SelectWithSearch";
 import SelectWithSearchMulti from "../../ui/SelectWithSearchMulti";
 import DatePickerInput from "../../ui/DatePickerInput";
 import { useEffect, useState } from "react";
-import moment from "moment/moment";
-import {
-  chamberSave,
-  districtDropdownByDivisionId,
-  divisionDropdown,
-  doctorSave,
-  upazilaDropdownByDistrictId,
-} from "../../../api/api.js";
+import { doctorEditFormHelperData, doctorUpdate } from "../../../api/api.js";
 import SubmitNotification from "../../ui/SubmitNotification.jsx";
 import HOC from "../../hoc/HOC.jsx";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
-  chamberDepartmentOptions,
-  chamberFacilityOption,
-  chamberSericeOptions,
   doctorEducationOption,
   doctorExperienceOption,
   doctorLangOption,
@@ -26,10 +15,14 @@ import {
 } from "../../../helpers/form-helper.jsx";
 import { openPopupAction } from "../../../store/uiSlice";
 import { useDispatch } from "react-redux";
-import { parsePickerDate } from "../../../helpers/utility";
+import {
+  getSelectedDrodownItems,
+  parsePickerDate,
+} from "../../../helpers/utility";
 import RadioButton from "../../ui/RadioButton";
 
 export function EditDoctor() {
+  const { id } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const initFormData = {
@@ -55,7 +48,7 @@ export function EditDoctor() {
   const [formData, setFormData] = useState(initFormData);
   const [actionButtonLoading, setActionButtonLoading] = useState(false);
   const [notification, setNotification] = useState({ msg: null, type: null }); //[danger,success]
-  const [pageLoaded, setPageLoaded] = useState(true);
+  const [pageLoaded, setPageLoaded] = useState(false);
   const [preview, setPreview] = useState({ profile_picture_preview: null });
   const [doctorChamberOptions, setDoctorChamberOptions] = useState([]);
 
@@ -64,9 +57,10 @@ export function EditDoctor() {
       try {
         const {
           data: { status, data, msg },
-        } = await divisionDropdown();
+        } = await doctorEditFormHelperData(id);
         if (status) {
-          //
+          populateFormData(data.data);
+          setDoctorChamberOptions(data.chambers);
         } else {
           dispatch(
             openPopupAction({
@@ -89,8 +83,44 @@ export function EditDoctor() {
         setPageLoaded(true);
       }
     };
-    //fetchForHelperData();
+    fetchForHelperData();
   }, []);
+
+  const populateFormData = (serverData) => {
+    const dropdownFormItems = {
+      qualification: doctorQualificationOption,
+      education: doctorEducationOption,
+      speciality: doctorSpecialityOption,
+      experience: doctorExperienceOption,
+      language: doctorLangOption,
+    };
+    const copyFormData = { ...formData };
+    for (const item in formData) {
+      if (item in serverData) {
+        if (item in dropdownFormItems) {
+          copyFormData[item] = getSelectedDrodownItems(
+            dropdownFormItems[item],
+            serverData[item]
+          );
+          continue;
+        }
+        if (item === "dob") {
+          copyFormData[item] = new Date(serverData[item]);
+          continue;
+        }
+        copyFormData[item] = serverData[item];
+      }
+    }
+
+    const copyPreview = { ...preview };
+    for (const item in preview) {
+      if (item in serverData) {
+        copyPreview[item] = serverData[item];
+      }
+    }
+    setFormData(copyFormData);
+    setPreview(copyPreview);
+  };
 
   const handleInput = ({ target: { name, value } }) => {
     setFormData((prevState) => {
@@ -144,12 +174,12 @@ export function EditDoctor() {
       const form_data = parseFormData();
       const {
         data: { status, msg },
-      } = await doctorSave(form_data);
+      } = await doctorUpdate(form_data, id);
       console.log(status, msg);
       if (status) {
         setNotification({ msg, type: "success" });
         setTimeout(() => {
-          navigate("/dashboard/chambers");
+          navigate("/dashboard/doctors");
         }, 2000);
       } else {
         setNotification({ msg, type: "danger" });
@@ -169,7 +199,7 @@ export function EditDoctor() {
   };
 
   return (
-    <HOC isLoaded={pageLoaded} hasData={true}>
+    <HOC isLoaded={pageLoaded} hasData={!!doctorChamberOptions.length}>
       <main>
         <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
           <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -304,17 +334,15 @@ export function EditDoctor() {
                         Gender
                       </label>
                       <div className="md:flex md:gap-4" onChange={handleInput}>
-                        <RadioButton label="Male" name="gender" value="male" />
-                        <RadioButton
-                          label="Female"
-                          name="gender"
-                          value="female"
-                        />
-                        <RadioButton
-                          label="Others"
-                          name="gender"
-                          value="others"
-                        />
+                        {["Male", "Female", "Others"].map((g) => (
+                          <RadioButton
+                            key={g}
+                            label={g}
+                            name="gender"
+                            value={g.toLowerCase()}
+                            selectedValue={formData.gender}
+                          />
+                        ))}
                       </div>
                     </div>
 
@@ -360,7 +388,7 @@ export function EditDoctor() {
                         Chambers
                       </label>
                       <SelectWithSearchMulti
-                        name="services"
+                        name="chamber"
                         value={formData.chamber}
                         onChange={handleInput}
                         options={doctorChamberOptions}

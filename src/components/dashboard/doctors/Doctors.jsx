@@ -15,11 +15,9 @@ import {
   removeChamber,
   removeDoctor,
 } from "../../../api/api.js";
-import { openPopupAction } from "../../../store/uiSlice";
-import { useDispatch } from "react-redux";
+import Swal from "sweetalert2";
 
 export default function Doctors() {
-  const dispatch = useDispatch();
   const [pageLoaded, setPageLoaded] = useState(false);
   const [pageData, setPageData] = useState(null);
 
@@ -34,13 +32,11 @@ export default function Doctors() {
         }
       } catch (e) {
         console.log(e.message);
-        dispatch(
-          openPopupAction({
-            type: "danger",
-            title: "Failed!",
-            text: "Data can't be loaded right now",
-          })
-        );
+        Swal.fire({
+          icon: "error",
+          title: "Failed!",
+          text: "Cannot laod data right now",
+        });
       } finally {
         setPageLoaded(true);
       }
@@ -48,27 +44,41 @@ export default function Doctors() {
     fetchPageData();
   }, []);
 
-  const handleRemoveItem = async (id) => {
+  const handleRemoveItem = async (e) => {
     const tempPageData = [...pageData];
     try {
-      const restPageData = tempPageData.filter((item) => item._id !== id);
+      const { doctor_id } = e.currentTarget.dataset;
+      const popupResult = await Swal.fire({
+        icon: "warning",
+        title: "Do you want to Delete this item?",
+        showCancelButton: true,
+        confirmButtonText: "Delete",
+        confirmButtonColor: "#dc3545",
+      });
+      if (!popupResult.isConfirmed) {
+        return null;
+      }
+
+      const restPageData = tempPageData.filter(
+        (item) => item._id !== doctor_id
+      );
       setPageData(restPageData);
       const {
         data: { status },
-      } = await removeDoctor(id);
+      } = await removeDoctor(doctor_id);
       if (!status) {
         setPageData(tempPageData);
+      } else {
+        Swal.fire("Item deleted!", "", "success");
       }
     } catch (e) {
       console.log(e.message);
       setPageData(tempPageData);
-      dispatch(
-        openPopupAction({
-          type: "danger",
-          title: "Failed!",
-          text: "Cannot remove the item right now",
-        })
-      );
+      Swal.fire({
+        icon: "error",
+        title: "Ops! Cannot remove the item!",
+        showConfirmButton: false,
+      });
     }
   };
 
@@ -136,7 +146,7 @@ export default function Doctors() {
                         <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                           <ul className="text-black dark:text-white font-semibold">
                             {doctor.speciality?.map((sp) => (
-                              <li className="flex items-center gap-1">
+                              <li key={sp} className="flex items-center gap-1">
                                 <FaRegHandPointRight /> {sp}
                               </li>
                             ))}
@@ -168,7 +178,8 @@ export default function Doctors() {
                             </Link>
                             <button
                               type="button"
-                              onClick={() => handleRemoveItem(doctor._id)}
+                              data-doctor_id={doctor._id}
+                              onClick={handleRemoveItem}
                               className="inline-flex items-center justify-center rounded-md bg-meta-1 px-5 py-3 text-center font-medium text-white hover:bg-opacity-90"
                             >
                               <FaTrashAlt className="inline" />

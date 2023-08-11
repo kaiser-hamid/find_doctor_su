@@ -5,11 +5,9 @@ import { authPasswordChange } from "../../../api/api.js";
 import SubmitNotification from "../../ui/SubmitNotification";
 import Validator from "../../../validation/Validator.js";
 import { editProfileRules } from "../../../validation/rules.js";
-import { useDispatch } from "react-redux";
-import { openPopupAction } from "../../../store/uiSlice.js";
+import Swal from "sweetalert2";
 
 export function EditProfileForm() {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const initFormData = {
@@ -59,13 +57,11 @@ export function EditProfileForm() {
       }
     } catch (e) {
       console.log(e.message);
-      dispatch(
-        openPopupAction({
-          type: "danger",
-          title: "Failed!",
-          text: e.message,
-        })
-      );
+      Swal.fire({
+        icon: "error",
+        title: "Failed!",
+        text: "Cannot laod data right now",
+      });
     } finally {
       setActionButtonLoading(false);
     }

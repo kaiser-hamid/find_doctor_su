@@ -1,13 +1,14 @@
 import { createBrowserRouter } from "react-router-dom";
+
+import HOAC from "./components/hoc/HOAC.jsx";
 import Login from "./components/auth/Login.jsx";
-import Dashboard from "./components/dashboard/Dashboard.jsx";
 import Root from "./components/dashboard/Root.jsx";
+import Dashboard from "./components/dashboard/Dashboard.jsx";
+import Profile from "./components/dashboard/profile/Profile";
+import { EditProfileForm } from "./components/dashboard/profile/EditProfileForm";
 import Doctors from "./components/dashboard/doctors/Doctors";
 import { AddDoctor } from "./components/dashboard/doctors/AddDoctor";
 import { EditDoctor } from "./components/dashboard/doctors/EditDoctor";
-import HOAC from "./components/hoc/HOAC.jsx";
-import Profile from "./components/dashboard/profile/Profile";
-import { EditProfileForm } from "./components/dashboard/profile/EditProfileForm";
 import { AddChamber } from "./components/dashboard/chambers/AddChamber.jsx";
 import Chambers from "./components/dashboard/chambers/Chambers.jsx";
 import { EditChamber } from "./components/dashboard/chambers/EditChamber.jsx";

@@ -13,17 +13,15 @@ import {
   doctorQualificationOption,
   doctorSpecialityOption,
 } from "../../../helpers/form-helper.jsx";
-import { openPopupAction } from "../../../store/uiSlice";
-import { useDispatch } from "react-redux";
 import {
   getSelectedDrodownItems,
   parsePickerDate,
 } from "../../../helpers/utility";
 import RadioButton from "../../ui/RadioButton";
+import Swal from "sweetalert2";
 
 export function EditDoctor() {
   const { id } = useParams();
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const initFormData = {
     first_name: "",
@@ -62,23 +60,19 @@ export function EditDoctor() {
           populateFormData(data.data);
           setDoctorChamberOptions(data.chambers);
         } else {
-          dispatch(
-            openPopupAction({
-              type: "danger",
-              title: "Failed!",
-              text: msg,
-            })
-          );
+          Swal.fire({
+            icon: "error",
+            title: "Failed!",
+            text: msg,
+          });
         }
       } catch (e) {
         console.log(e.message);
-        dispatch(
-          openPopupAction({
-            type: "danger",
-            title: "Failed!",
-            text: "Cannot load data",
-          })
-        );
+        Swal.fire({
+          icon: "error",
+          title: "Failed!",
+          text: "Cannot laod data right now",
+        });
       } finally {
         setPageLoaded(true);
       }
@@ -186,13 +180,11 @@ export function EditDoctor() {
       }
     } catch (e) {
       console.log(e.message);
-      dispatch(
-        openPopupAction({
-          type: "danger",
-          title: "Failed!",
-          text: e.message,
-        })
-      );
+      Swal.fire({
+        icon: "error",
+        title: "Failed!",
+        text: e.message,
+      });
     } finally {
       setActionButtonLoading(false);
     }

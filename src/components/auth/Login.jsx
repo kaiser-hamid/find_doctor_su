@@ -9,8 +9,8 @@ import SubmitNotification from "../ui/SubmitNotification";
 import HOLC from "../hoc/HOLC.jsx";
 import Validator from "../../validation/Validator.js";
 import { loginRules } from "../../validation/rules.js";
-import { openPopupAction } from "../../store/uiSlice.js";
 import http from "../../Axios.js";
+import Swal from "sweetalert2";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -68,13 +68,11 @@ const Login = () => {
       }
     } catch (e) {
       console.log(e.message);
-      dispatch(
-        openPopupAction({
-          type: "danger",
-          title: "Failed!",
-          text: "Cannot logged in right now",
-        })
-      );
+      Swal.fire({
+        icon: "error",
+        title: "Failed!",
+        text: "Cannot logged in right now",
+      });
     } finally {
       setActionButtonLoading(false);
     }

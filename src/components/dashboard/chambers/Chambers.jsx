@@ -3,11 +3,9 @@ import { FaEdit, FaPlus, FaTrashAlt } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import HOC from "../../hoc/HOC.jsx";
 import { chambers, doctors, removeChamber } from "../../../api/api.js";
-import { openPopupAction } from "../../../store/uiSlice";
-import { useDispatch } from "react-redux";
+import Swal from "sweetalert2";
 
 export default function Chambers() {
-  const dispatch = useDispatch();
   const [pageLoaded, setPageLoaded] = useState(false);
   const [pageData, setPageData] = useState(null);
 
@@ -22,13 +20,11 @@ export default function Chambers() {
         }
       } catch (e) {
         console.log(e.message);
-        dispatch(
-          openPopupAction({
-            type: "danger",
-            title: "Failed!",
-            text: "Data can't be loaded right now",
-          })
-        );
+        Swal.fire({
+          icon: "error",
+          title: "Failed!",
+          text: "Cannot laod data right now",
+        });
       } finally {
         setPageLoaded(true);
       }
@@ -36,27 +32,41 @@ export default function Chambers() {
     fetchPageData();
   }, []);
 
-  const handleRemoveItem = async (id) => {
+  const handleRemoveItem = async (e) => {
     const tempPageData = [...pageData];
     try {
-      const restPageData = tempPageData.filter((item) => item._id !== id);
+      const { chamber_id } = e.currentTarget.dataset;
+      const popupResult = await Swal.fire({
+        icon: "warning",
+        title: "Do you want to Delete this item?",
+        showCancelButton: true,
+        confirmButtonText: "Delete",
+        confirmButtonColor: "#dc3545",
+      });
+      if (!popupResult.isConfirmed) {
+        return null;
+      }
+
+      const restPageData = tempPageData.filter(
+        (item) => item._id !== chamber_id
+      );
       setPageData(restPageData);
       const {
         data: { status },
-      } = await removeChamber(id);
+      } = await removeChamber(chamber_id);
       if (!status) {
         setPageData(tempPageData);
+      } else {
+        Swal.fire("Item deleted!", "", "success");
       }
     } catch (e) {
       console.log(e.message);
       setPageData(tempPageData);
-      dispatch(
-        openPopupAction({
-          type: "danger",
-          title: "Failed!",
-          text: "Cannot remove the item right now",
-        })
-      );
+      Swal.fire({
+        icon: "error",
+        title: "Ops! Cannot remove the item!",
+        showConfirmButton: false,
+      });
     }
   };
 
@@ -148,7 +158,8 @@ export default function Chambers() {
                             </Link>
                             <button
                               type="button"
-                              onClick={() => handleRemoveItem(chamber._id)}
+                              data-chamber_id={chamber._id}
+                              onClick={handleRemoveItem}
                               className="inline-flex items-center justify-center rounded-md bg-meta-1 px-5 py-3 text-center font-medium text-white hover:bg-opacity-90"
                             >
                               <FaTrashAlt className="inline" />

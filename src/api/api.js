@@ -1,12 +1,6 @@
 import axios from "axios";
 import http from "../Axios.js";
 
-//token initialization
-// const token = localStorage.getItem("admin_token");
-// if (token) {
-//   http.defaults.headers.Authorization = `Bearer ${token}`;
-// }
-
 //Authentication
 export const login = (data) => http.post("admin/login", data);
 export const authCheck = () => http.get("admin/auth-check");

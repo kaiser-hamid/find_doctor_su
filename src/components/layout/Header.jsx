@@ -9,8 +9,7 @@ import {
 import MobileNav from "../layout/MobileNav.jsx";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutAction } from "../../store/authSlice.js";
-import { Link, useNavigate } from "react-router-dom";
-import { openPopupAction } from "../../store/uiSlice.js";
+import { Link } from "react-router-dom";
 
 export default function Headerr() {
   const dispatch = useDispatch();

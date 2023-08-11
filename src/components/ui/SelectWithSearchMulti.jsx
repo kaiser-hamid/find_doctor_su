@@ -19,6 +19,7 @@ export default function SelectWithSearchMulti({
       options={options}
       value={value}
       isMulti
+      closeMenuOnSelect={false}
     />
   );
 }

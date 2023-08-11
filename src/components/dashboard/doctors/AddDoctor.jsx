@@ -32,7 +32,6 @@ export function AddDoctor() {
     phone: "",
     email: "",
     profile_picture: "",
-    chamber: [],
     gender: "",
     dob: "",
     address: "",
@@ -49,35 +48,9 @@ export function AddDoctor() {
   const [notification, setNotification] = useState({ msg: null, type: null }); //[danger,success]
   const [pageLoaded, setPageLoaded] = useState(false);
   const [preview, setPreview] = useState({ profile_picture_preview: null });
-  const [doctorChamberOptions, setDoctorChamberOptions] = useState([]);
 
   useEffect(() => {
-    const fetchForHelperData = async () => {
-      try {
-        const {
-          data: { status, data, msg },
-        } = await doctorAddFormHelperData();
-        if (status) {
-          setDoctorChamberOptions(data.chambers);
-        } else {
-          Swal.fire({
-            icon: "error",
-            title: "Failed!",
-            text: msg,
-          });
-        }
-      } catch (e) {
-        console.log(e.message);
-        Swal.fire({
-          icon: "error",
-          title: "Failed!",
-          text: "Cannot laod data right now",
-        });
-      } finally {
-        setPageLoaded(true);
-      }
-    };
-    fetchForHelperData();
+    setPageLoaded(true);
   }, []);
 
   const handleInput = ({ target: { name, value } }) => {
@@ -101,7 +74,6 @@ export function AddDoctor() {
   const parseFormData = () => {
     const data = new FormData();
     const multiSelectItems = [
-      "chamber",
       "speciality",
       "qualification",
       "education",
@@ -155,7 +127,7 @@ export function AddDoctor() {
   };
 
   return (
-    <HOC isLoaded={pageLoaded} hasData={!!doctorChamberOptions.length}>
+    <HOC isLoaded={pageLoaded} hasData={true}>
       <main>
         <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
           <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -339,18 +311,6 @@ export function AddDoctor() {
                   </div>
 
                   <div className="grid grid-cols-1  gap-x-8 gap-y-2">
-                    <div className="mb-4.5">
-                      <label className="mb-2.5 block text-black dark:text-white">
-                        Chambers
-                      </label>
-                      <SelectWithSearchMulti
-                        name="chamber"
-                        value={formData.chamber}
-                        onChange={handleInput}
-                        options={doctorChamberOptions}
-                      />
-                    </div>
-
                     <div className="mb-4.5">
                       <label className="mb-2.5 block text-black dark:text-white">
                         Specialities

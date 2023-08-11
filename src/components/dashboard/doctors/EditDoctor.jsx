@@ -31,7 +31,6 @@ export function EditDoctor() {
     phone: "",
     email: "",
     profile_picture: "",
-    chamber: [],
     gender: "",
     dob: "",
     address: "",
@@ -48,7 +47,6 @@ export function EditDoctor() {
   const [notification, setNotification] = useState({ msg: null, type: null }); //[danger,success]
   const [pageLoaded, setPageLoaded] = useState(false);
   const [preview, setPreview] = useState({ profile_picture_preview: null });
-  const [doctorChamberOptions, setDoctorChamberOptions] = useState([]);
 
   useEffect(() => {
     const fetchForHelperData = async () => {
@@ -58,7 +56,6 @@ export function EditDoctor() {
         } = await doctorEditFormHelperData(id);
         if (status) {
           populateFormData(data.data);
-          setDoctorChamberOptions(data.chambers);
         } else {
           Swal.fire({
             icon: "error",
@@ -137,7 +134,6 @@ export function EditDoctor() {
   const parseFormData = () => {
     const data = new FormData();
     const multiSelectItems = [
-      "chamber",
       "speciality",
       "qualification",
       "education",
@@ -191,7 +187,7 @@ export function EditDoctor() {
   };
 
   return (
-    <HOC isLoaded={pageLoaded} hasData={!!doctorChamberOptions.length}>
+    <HOC isLoaded={pageLoaded} hasData={true}>
       <main>
         <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
           <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -375,18 +371,6 @@ export function EditDoctor() {
                   </div>
 
                   <div className="grid grid-cols-1  gap-x-8 gap-y-2">
-                    <div className="mb-4.5">
-                      <label className="mb-2.5 block text-black dark:text-white">
-                        Chambers
-                      </label>
-                      <SelectWithSearchMulti
-                        name="chamber"
-                        value={formData.chamber}
-                        onChange={handleInput}
-                        options={doctorChamberOptions}
-                      />
-                    </div>
-
                     <div className="mb-4.5">
                       <label className="mb-2.5 block text-black dark:text-white">
                         Specialities

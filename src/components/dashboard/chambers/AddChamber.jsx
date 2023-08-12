@@ -21,7 +21,7 @@ import {
 import { parsePickerDate } from "../../../helpers/utility";
 import Swal from "sweetalert2";
 
-export function AddChamber() {
+export default function AddChamber() {
   const navigate = useNavigate();
   const initFormData = {
     name: "",

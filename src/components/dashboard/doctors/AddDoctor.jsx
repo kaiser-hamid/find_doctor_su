@@ -22,7 +22,7 @@ import { parsePickerDate } from "../../../helpers/utility";
 import RadioButton from "../../ui/RadioButton";
 import Swal from "sweetalert2";
 
-export function AddDoctor() {
+export default function AddDoctor() {
   const navigate = useNavigate();
   const initFormData = {
     first_name: "",

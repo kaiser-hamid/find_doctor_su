@@ -7,7 +7,7 @@ import Validator from "../../../validation/Validator.js";
 import { editProfileRules } from "../../../validation/rules.js";
 import Swal from "sweetalert2";
 
-export function EditProfileForm() {
+export default function EditProfileForm() {
   const navigate = useNavigate();
 
   const initFormData = {

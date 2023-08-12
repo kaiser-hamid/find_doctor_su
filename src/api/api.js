@@ -38,6 +38,10 @@ export const doctorAddFormHelperData = () =>
   http.get("admin/doctor/form-helper-data");
 export const doctorEditFormHelperData = (id) =>
   http.get(`admin/doctors/${id}/edit`);
+export const assignChamberFormData = (id) =>
+  http.get(`admin/assign-chamber/${id}`);
+export const assignChamberToDoctor = (data, id) =>
+  http.put(`admin/assign-chamber/${id}`, data);
 
 //Utility
 export const divisionDropdown = () => http.get("division-options");

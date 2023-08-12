@@ -5,6 +5,7 @@ import {
   FaHandPointRight,
   FaPlus,
   FaRegHandPointRight,
+  FaSyncAlt,
   FaTrashAlt,
 } from "react-icons/fa";
 import { useEffect, useState } from "react";
@@ -119,6 +120,9 @@ export default function Doctors() {
                       <th className="min-w-[120px] py-4 px-4 font-medium text-black dark:text-white">
                         Contact Info
                       </th>
+                      <th className="min-w-[120px] py-4 px-4 font-medium text-black dark:text-white">
+                        Chambers
+                      </th>
                       <th className="py-4 px-4 font-medium text-black text-center dark:text-white">
                         Actions
                       </th>
@@ -167,7 +171,23 @@ export default function Doctors() {
                             </a>
                           </p>
                         </td>
-
+                        <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                          <ul className="list-disc">
+                            {doctor.chamber?.map((cmb) => (
+                              <li className="text-sm font-semibold">{cmb}</li>
+                            ))}
+                            {!doctor.chamber.length && (
+                              <p className="text-bodydark2">No chamber</p>
+                            )}
+                          </ul>
+                          <Link
+                            to={`assign-chamber/${doctor._id}`}
+                            className="text-xs font-semibold text-primary flex items-center gap-1"
+                          >
+                            <FaSyncAlt className="inline" />{" "}
+                            <span className="text-sm">Change list</span>
+                          </Link>
+                        </td>
                         <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                           <div className="flex items-center justify-center space-x-3.5">
                             <Link

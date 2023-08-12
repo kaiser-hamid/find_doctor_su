@@ -20,7 +20,7 @@ import {
 import RadioButton from "../../ui/RadioButton";
 import Swal from "sweetalert2";
 
-export function EditDoctor() {
+export default function EditDoctor() {
   const { id } = useParams();
   const navigate = useNavigate();
   const initFormData = {

@@ -1,6 +1,12 @@
-import Select from "react-select";
+import Select, { components } from "react-select";
 
-export default function SelectWithSearch({ name, value, options, onChange }) {
+export default function SelectWithSearch({
+  name,
+  value,
+  options,
+  onChange,
+  hasSubLabel,
+}) {
   const handleChangeInput = (ctx) => {
     onChange({ target: { name, value: ctx.value } });
   };
@@ -9,6 +15,20 @@ export default function SelectWithSearch({ name, value, options, onChange }) {
     const valueForSet = options.find((item) => item.value === value);
     return valueForSet || { id: "", label: "", value: "" };
   };
+
+  const Option = (props) =>
+    !hasSubLabel ? (
+      <components.Option {...props} />
+    ) : (
+      <components.Option {...props}>
+        <p className="font-semibold">
+          {props.data.label}
+          <span className="text-bodydark block text-xs italic">
+            -{props.data.sub}
+          </span>
+        </p>
+      </components.Option>
+    );
 
   return (
     <Select
@@ -22,6 +42,7 @@ export default function SelectWithSearch({ name, value, options, onChange }) {
       onChange={handleChangeInput}
       options={options}
       value={handleGetValue()}
+      components={{ Option }}
     />
   );
 }

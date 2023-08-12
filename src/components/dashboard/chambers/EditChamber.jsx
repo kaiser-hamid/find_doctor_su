@@ -26,7 +26,7 @@ import {
 } from "../../../helpers/utility";
 import Swal from "sweetalert2";
 
-export function EditChamber() {
+export default function EditChamber() {
   const { id } = useParams();
   const navigate = useNavigate();
   const initFormData = {

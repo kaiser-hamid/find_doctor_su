@@ -5,13 +5,14 @@ import Login from "./components/auth/Login.jsx";
 import Root from "./components/dashboard/Root.jsx";
 import Dashboard from "./components/dashboard/Dashboard.jsx";
 import Profile from "./components/dashboard/profile/Profile";
-import { EditProfileForm } from "./components/dashboard/profile/EditProfileForm";
+import EditProfileForm from "./components/dashboard/profile/EditProfileForm";
 import Doctors from "./components/dashboard/doctors/Doctors";
-import { AddDoctor } from "./components/dashboard/doctors/AddDoctor";
-import { EditDoctor } from "./components/dashboard/doctors/EditDoctor";
-import { AddChamber } from "./components/dashboard/chambers/AddChamber.jsx";
+import AddDoctor from "./components/dashboard/doctors/AddDoctor";
+import EditDoctor from "./components/dashboard/doctors/EditDoctor";
+import AssignChamber from "./components/dashboard/doctors/AssignChamber";
+import AddChamber from "./components/dashboard/chambers/AddChamber.jsx";
 import Chambers from "./components/dashboard/chambers/Chambers.jsx";
-import { EditChamber } from "./components/dashboard/chambers/EditChamber.jsx";
+import EditChamber from "./components/dashboard/chambers/EditChamber.jsx";
 
 export default createBrowserRouter([
   {
@@ -61,6 +62,10 @@ export default createBrowserRouter([
       {
         path: "doctors/:id/edit",
         element: <EditDoctor />,
+      },
+      {
+        path: "doctors/assign-chamber/:id",
+        element: <AssignChamber />,
       },
       {
         path: "chambers",

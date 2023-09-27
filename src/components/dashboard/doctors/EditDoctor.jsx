@@ -33,13 +33,16 @@ export default function EditDoctor() {
     profile_picture: "",
     gender: "",
     dob: "",
+    bmdc_reg_no: "",
     address: "",
     address_bn: "",
-    bmdc_reg_no: "",
+    about_doctor: "",
+    about_doctor_bn: "",
+    experience: "",
+    experience_bn: "",
     speciality: [],
     qualification: [],
     education: [],
-    experience: [],
     language: [],
   };
   const [formData, setFormData] = useState(initFormData);
@@ -82,7 +85,6 @@ export default function EditDoctor() {
       qualification: doctorQualificationOption,
       education: doctorEducationOption,
       speciality: doctorSpecialityOption,
-      experience: doctorExperienceOption,
       language: doctorLangOption,
     };
     const copyFormData = { ...formData };
@@ -137,7 +139,6 @@ export default function EditDoctor() {
       "speciality",
       "qualification",
       "education",
-      "experience",
       "language",
     ];
     const dateItems = ["dob"];
@@ -368,9 +369,59 @@ export default function EditDoctor() {
                         className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                       />
                     </div>
+
+                    <div className="mb-4.5">
+                      <label className="mb-2.5 block text-black dark:text-white">
+                        Experiences (EN)
+                      </label>
+                      <input
+                        type="text"
+                        name="experience"
+                        value={formData.experience}
+                        onChange={handleInput}
+                        className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                      />
+                    </div>
+
+                    <div className="mb-4.5">
+                      <label className="mb-2.5 block text-black dark:text-white">
+                        Experiences (BN)
+                      </label>
+                      <input
+                        type="text"
+                        name="experience_bn"
+                        value={formData.experience_bn}
+                        onChange={handleInput}
+                        className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                      />
+                    </div>
                   </div>
 
                   <div className="grid grid-cols-1  gap-x-8 gap-y-2">
+                    <div className="mb-4.5">
+                      <label className="mb-2.5 block text-black dark:text-white">
+                        About doctor (EN)
+                      </label>
+                      <textarea
+                        name="about_doctor"
+                        value={formData.about_doctor}
+                        onChange={handleInput}
+                        className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                      />
+                    </div>
+
+                    <div className="mb-4.5">
+                      <label className="mb-2.5 block text-black dark:text-white">
+                        About doctor (BN)
+                      </label>
+                      <textarea
+                        name="about_doctor_bn"
+                        value={formData.about_doctor_bn}
+                        onChange={handleInput}
+                        className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                      />
+                    </div>
+
                     <div className="mb-4.5">
                       <label className="mb-2.5 block text-black dark:text-white">
                         Specialities
@@ -404,18 +455,6 @@ export default function EditDoctor() {
                         value={formData.education}
                         onChange={handleInput}
                         options={doctorEducationOption}
-                      />
-                    </div>
-
-                    <div className="mb-4.5">
-                      <label className="mb-2.5 block text-black dark:text-white">
-                        Experiences
-                      </label>
-                      <SelectWithSearchMulti
-                        name="experience"
-                        value={formData.experience}
-                        onChange={handleInput}
-                        options={doctorExperienceOption}
                       />
                     </div>
 

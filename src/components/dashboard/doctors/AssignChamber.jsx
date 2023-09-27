@@ -23,7 +23,10 @@ import SubmitNotification from "../../ui/SubmitNotification.jsx";
 import HOC from "../../hoc/HOC.jsx";
 import { useNavigate, useParams } from "react-router-dom";
 import { doctorSpecialityOption } from "../../../helpers/form-helper.jsx";
-import { parsePickerDate } from "../../../helpers/utility";
+import {
+  getSelectedDrodownItems,
+  parsePickerDate,
+} from "../../../helpers/utility";
 import Swal from "sweetalert2";
 
 export default function AssignChamber() {
@@ -32,8 +35,10 @@ export default function AssignChamber() {
   const initFormData = [
     {
       chamber_id: "",
+      phone: "",
       schedule_start: "",
       schedule_end: "",
+      week_days: "",
     },
   ];
   const [formData, setFormData] = useState(initFormData);
@@ -42,6 +47,16 @@ export default function AssignChamber() {
   const [notification, setNotification] = useState({ msg: null, type: null }); //[danger,success]
   const [pageLoaded, setPageLoaded] = useState(false);
   const [chamberOptions, setChamberOptions] = useState([]);
+
+  const WEEKDAYS_OPTION = [
+    { id: "sat", label: "Sat", value: "sat" },
+    { id: "sun", label: "Sun", value: "sun" },
+    { id: "mon", label: "Mon", value: "mon" },
+    { id: "tue", label: "Tue", value: "tue" },
+    { id: "wed", label: "Wed", value: "wed" },
+    { id: "thu", label: "Thu", value: "thu" },
+    { id: "fri", label: "Fri", value: "fri" },
+  ];
 
   useEffect(() => {
     const fetchForHelperData = async () => {
@@ -53,7 +68,19 @@ export default function AssignChamber() {
           setChamberOptions(data.chambers);
           setDoctorName(data.doctor_name);
           if (data.doctor_chamber.length) {
-            setFormData(data.doctor_chamber);
+            const serverDataSync = data.doctor_chamber.map((item) => {
+              return {
+                chamber_id: item.chamber_id,
+                phone: item.phone,
+                schedule_start: item.schedule_start,
+                schedule_end: item.schedule_end,
+                week_days: getSelectedDrodownItems(
+                  WEEKDAYS_OPTION,
+                  item.week_days
+                ),
+              };
+            });
+            setFormData(serverDataSync);
           }
         } else {
           Swal.fire({
@@ -85,25 +112,15 @@ export default function AssignChamber() {
     setFormData(tempChambers);
   };
 
-  const handleInputFile = ({ target: { name, files } }) => {
-    setFormData((prevState) => {
-      return { ...prevState, [name]: files[0] };
-    });
-    //preview
-    const dataUrl = URL.createObjectURL(files[0]);
-    const previewAttribute = `${name}_preview`;
-    setPreview((prev) => {
-      return { ...prev, [previewAttribute]: dataUrl };
-    });
-  };
-
   const handleAddMore = () => {
     const tempChambers = [
       ...formData,
       {
         chamber_id: "",
+        phone: "",
         schedule_start: "",
         schedule_end: "",
+        week_days: "",
       },
     ];
     setFormData(tempChambers);
@@ -122,14 +139,19 @@ export default function AssignChamber() {
       if (!chamber.chamber_id) {
         continue;
       }
-      data.append(
-        `chamber[${chamber.chamber_id}][schedule_start]`,
-        chamber.schedule_start
-      );
-      data.append(
-        `chamber[${chamber.chamber_id}][schedule_end]`,
-        chamber.schedule_end
-      );
+      const multiSelectItems = ["week_days"];
+      for (const item in chamber) {
+        if (multiSelectItems.includes(item)) {
+          for (const selectItem of chamber[item]) {
+            data.append(
+              `chamber[${chamber.chamber_id}][${item}][]`,
+              selectItem.value
+            );
+          }
+          continue;
+        }
+        data.append(`chamber[${chamber.chamber_id}][${item}]`, chamber[item]);
+      }
     }
     return data;
   };
@@ -180,32 +202,33 @@ export default function AssignChamber() {
               Dr. {doctorName}
             </h2>
           </div>
-          <div className="flex flex-col gap-9">
-            <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-              <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
-                <h3 className="font-semibold text-black dark:text-white">
-                  Chamber List
-                </h3>
-              </div>
-              <form action="#">
-                <div className="p-6.5">
-                  <div className="grid md:grid-cols-3 grid-cols-1  gap-x-8 gap-y-2">
-                    <div className="mb-4.5">
-                      <p className="font-medium">Chambers</p>
-                    </div>
-                    <div className="mb-4.5">
-                      <p className="font-medium">Schedule start</p>
-                    </div>
-                    <div className="mb-4.5">
-                      <p className="font-medium">Schedule end</p>
-                    </div>
+          {formData.map((chamber, i) => (
+            <div className="flex flex-col gap-9 my-8">
+              <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+                <div className="flex justify-between items-center border-b border-stroke py-4 px-6.5 dark:border-strokedark">
+                  <h3 className="font-semibold text-black dark:text-white">
+                    Appointment Address{" "}
+                    <span className="font-bold"> #{i + 1}</span>
+                  </h3>
+                  <div>
+                    {formData.length > 1 && (
+                      <button
+                        type="button"
+                        onClick={handleRemoveRow}
+                        data-i={i}
+                      >
+                        <FaTimes className="inline text-3xl text-bodydark hover:text-danger transition duration-150 ease-in" />
+                      </button>
+                    )}
                   </div>
-                  {formData.map((chamber, i) => (
-                    <div
-                      key={i}
-                      className="grid md:grid-cols-3 grid-cols-1  gap-x-8 gap-y-2"
-                    >
-                      <div className="mb-4.5">
+                </div>
+                <form action="#">
+                  <div className="p-6.5">
+                    <div className="grid md:grid-cols-3 grid-cols-1  gap-x-8 gap-y-2">
+                      <div className="mb-4.5 col-span-1">
+                        <label className="mb-2.5 block text-black dark:text-white">
+                          Chamber
+                        </label>
                         <SelectWithSearch
                           onChange={handleInput}
                           value={formData[i].chamber_id}
@@ -214,7 +237,10 @@ export default function AssignChamber() {
                           hasSubLabel={true}
                         />
                       </div>
-                      <div className="mb-4.5">
+                      <div className="mb-4.5 col-span-1">
+                        <label className="mb-2.5 block text-black dark:text-white">
+                          Schedule Start
+                        </label>
                         <input
                           type="time"
                           name={`schedule_start:${i}`}
@@ -225,7 +251,10 @@ export default function AssignChamber() {
                           placeholder="Select a time"
                         />
                       </div>
-                      <div className="mb-4.5 flex items-center justify-between gap-2">
+                      <div className="mb-4.5 col-span-1">
+                        <label className="mb-2.5 block text-black dark:text-white">
+                          Schedule End
+                        </label>
                         <input
                           type="time"
                           name={`schedule_end:${i}`}
@@ -235,47 +264,63 @@ export default function AssignChamber() {
                           className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                           placeholder="Select a time"
                         />
-                        {formData.length > 1 && (
-                          <button
-                            type="button"
-                            onClick={handleRemoveRow}
-                            data-i={i}
-                          >
-                            <FaTimesCircle className="inline text-4xl text-bodydark hover:text-danger transition duration-150 ease-in" />
-                          </button>
-                        )}
+                      </div>
+                      <div className="mb-4.5 col-span-1">
+                        <label className="mb-2.5 block text-black dark:text-white">
+                          Phone No.
+                        </label>
+                        <input
+                          type="text"
+                          name={`phone:${i}`}
+                          onChange={handleInput}
+                          value={formData[i].phone}
+                          className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                        />
+                      </div>
+                      <div className="mb-4.5 md:col-span-2 col-span-1">
+                        <label className="mb-2.5 block text-black dark:text-white">
+                          Weekdays
+                        </label>
+                        <SelectWithSearchMulti
+                          onChange={handleInput}
+                          value={formData[i].week_days}
+                          name={`week_days:${i}`}
+                          options={WEEKDAYS_OPTION}
+                        />
                       </div>
                     </div>
-                  ))}
+                  </div>
+                </form>
+              </div>
+            </div>
+          ))}
 
-                  <div className="flex justify-end">
-                    <button
-                      type="button"
-                      onClick={handleAddMore}
-                      className="inline-flex items-center justify-center rounded-sm bg-primary text-center text-white hover:bg-opacity-90 px-2 py-1 my-1"
-                    >
-                      <FaPlusCircle />
-                      <span className="px-2">Add more</span>
-                    </button>
-                  </div>
-                  <div className="">
-                    <SubmitNotification notification={notification} />
-                    <button
-                      type="button"
-                      onClick={handleSubmit}
-                      disabled={actionButtonLoading}
-                      className="inline-flex items-center justify-center rounded-md bg-meta-3 py-4 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10 my-2"
-                    >
-                      {actionButtonLoading ? (
-                        <FaSpinner className="animate-spin" />
-                      ) : (
-                        <FaSync />
-                      )}
-                      <span className="px-2">Update</span>
-                    </button>
-                  </div>
-                </div>
-              </form>
+          <div>
+            <SubmitNotification notification={notification} />
+            <div className="flex justify-between items-start">
+              <button
+                type="button"
+                onClick={handleSubmit}
+                disabled={actionButtonLoading}
+                className="inline-flex items-center justify-center rounded-md bg-meta-3 py-4 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10 my-2"
+              >
+                {actionButtonLoading ? (
+                  <FaSpinner className="animate-spin" />
+                ) : (
+                  <FaSync />
+                )}
+                <span className="px-2">Update</span>
+              </button>
+              <div className="flex justify-end">
+                <button
+                  type="button"
+                  onClick={handleAddMore}
+                  className="inline-flex items-center justify-center rounded bg-black text-center text-white hover:bg-opacity-90 px-2 py-1 my-1"
+                >
+                  <FaPlusCircle />
+                  <span className="px-2">Add more chamber</span>
+                </button>
+              </div>
             </div>
           </div>
         </div>

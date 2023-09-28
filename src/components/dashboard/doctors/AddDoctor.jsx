@@ -27,7 +27,7 @@ export default function AddDoctor() {
     designation: "",
     institute: "",
     experience: "",
-    degree: "",
+    degree: [],
     speciality: [],
   };
   const [formData, setFormData] = useState(initFormData);
@@ -157,8 +157,8 @@ export default function AddDoctor() {
                         First Name (EN)
                       </label>
                       <div className="relative">
-                        <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-5">
-                          <span class="text-gray-500 font-medium">Dr.</span>
+                        <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-5">
+                          <span className="text-gray-500 font-medium">Dr.</span>
                         </div>
                         <input
                           type="text"
@@ -175,8 +175,8 @@ export default function AddDoctor() {
                         First Name (BN)
                       </label>
                       <div className="relative">
-                        <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-5">
-                          <span class="text-gray-500 font-medium">ডাঃ</span>
+                        <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-5">
+                          <span className="text-gray-500 font-medium">ডাঃ</span>
                         </div>
                         <input
                           type="text"

@@ -5,6 +5,7 @@ import DatePickerInput from "../../ui/DatePickerInput";
 import { useEffect, useState } from "react";
 import moment from "moment/moment";
 import {
+  chamberAddFormHelperData,
   chamberSave,
   districtDropdownByDivisionId,
   divisionDropdown,
@@ -42,7 +43,7 @@ export default function AddChamber() {
   const [formData, setFormData] = useState(initFormData);
   const [actionButtonLoading, setActionButtonLoading] = useState(false);
   const [notification, setNotification] = useState({ msg: null, type: null }); //[danger,success]
-  const [pageLoaded, setPageLoaded] = useState(true);
+  const [pageLoaded, setPageLoaded] = useState(false);
   const [preview, setPreview] = useState({
     logo_preview: null,
   });
@@ -58,9 +59,10 @@ export default function AddChamber() {
       try {
         const {
           data: { status, data, msg },
-        } = await divisionDropdown();
+        } = await chamberAddFormHelperData();
         if (status) {
           setDivisionOptions(data.divisions);
+          setServiceOptions(data.services);
         } else {
           Swal.fire({
             icon: "error",

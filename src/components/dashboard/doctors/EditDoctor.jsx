@@ -1,15 +1,13 @@
 import { FaSave, FaSpinner } from "react-icons/fa";
 import SelectWithSearchMulti from "../../ui/SelectWithSearchMulti";
-import DatePickerInput from "../../ui/DatePickerInput";
+import SelectWithSearch from "../../ui/SelectWithSearch";
+import CreatableSelect from "../../ui/CreatableSelect";
 import { useEffect, useState } from "react";
 import { doctorEditFormHelperData, doctorUpdate } from "../../../api/api.js";
 import SubmitNotification from "../../ui/SubmitNotification.jsx";
 import HOC from "../../hoc/HOC.jsx";
 import { useNavigate, useParams } from "react-router-dom";
-import {
-  getSelectedDrodownItems,
-  parsePickerDate,
-} from "../../../helpers/utility";
+import { getSelectedDrodownItems } from "../../../helpers/utility";
 import RadioButton from "../../ui/RadioButton";
 import Swal from "sweetalert2";
 
@@ -25,18 +23,14 @@ export default function EditDoctor() {
     email: "",
     profile_picture: "",
     gender: "",
-    dob: "",
-    bmdc_reg_no: "",
-    address: "",
-    address_bn: "",
     about_doctor: "",
     about_doctor_bn: "",
+    bmdc_reg_no: "",
+    designation: "",
+    institute: "",
     experience: "",
-    experience_bn: "",
+    degree: [],
     speciality: [],
-    qualification: [],
-    education: [],
-    language: [],
   };
   const [formData, setFormData] = useState(initFormData);
   const [actionButtonLoading, setActionButtonLoading] = useState(false);
@@ -55,7 +49,10 @@ export default function EditDoctor() {
           data: { status, data, msg },
         } = await doctorEditFormHelperData(id);
         if (status) {
-          populateFormData(data.data);
+          setSpecialityOptions(data.specialities);
+          setDesignationOptions(data.designations);
+          setInstituteOptions(data.institutes);
+          populateFormData(data.data, data.specialities);
         } else {
           Swal.fire({
             icon: "error",
@@ -77,12 +74,9 @@ export default function EditDoctor() {
     fetchForHelperData();
   }, []);
 
-  const populateFormData = (serverData) => {
+  const populateFormData = (serverData, specialityOpt) => {
     const dropdownFormItems = {
-      qualification: doctorQualificationOption,
-      education: doctorEducationOption,
-      speciality: doctorSpecialityOption,
-      language: doctorLangOption,
+      speciality: specialityOpt,
     };
     const copyFormData = { ...formData };
     for (const item in formData) {
@@ -92,10 +86,6 @@ export default function EditDoctor() {
             dropdownFormItems[item],
             serverData[item]
           );
-          continue;
-        }
-        if (item === "dob") {
-          copyFormData[item] = new Date(serverData[item]);
           continue;
         }
         copyFormData[item] = serverData[item];
@@ -132,22 +122,12 @@ export default function EditDoctor() {
 
   const parseFormData = () => {
     const data = new FormData();
-    const multiSelectItems = [
-      "speciality",
-      "qualification",
-      "education",
-      "language",
-    ];
-    const dateItems = ["dob"];
+    const multiSelectItems = ["speciality", "degree"];
     for (const item in formData) {
       if (multiSelectItems.includes(item)) {
         for (const selectItem of formData[item]) {
           data.append(`${item}[]`, selectItem.value);
         }
-        continue;
-      }
-      if (dateItems.includes(item)) {
-        data.append(item, parsePickerDate(formData[item]));
         continue;
       }
       data.append(item, formData[item]);
@@ -207,26 +187,36 @@ export default function EditDoctor() {
                       <label className="mb-2.5 block text-black dark:text-white">
                         First Name (EN)
                       </label>
-                      <input
-                        type="text"
-                        name="first_name"
-                        value={formData.first_name}
-                        onChange={handleInput}
-                        className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-                      />
+                      <div className="relative">
+                        <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-5">
+                          <span className="text-gray-500 font-medium">Dr.</span>
+                        </div>
+                        <input
+                          type="text"
+                          name="first_name"
+                          value={formData.first_name}
+                          onChange={handleInput}
+                          className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-11 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                        />
+                      </div>
                     </div>
 
                     <div className="mb-4.5">
                       <label className="mb-2.5 block text-black dark:text-white">
                         First Name (BN)
                       </label>
-                      <input
-                        type="text"
-                        name="first_name_bn"
-                        value={formData.first_name_bn}
-                        onChange={handleInput}
-                        className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-                      />
+                      <div className="relative">
+                        <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-5">
+                          <span className="text-gray-500 font-medium">ডাঃ</span>
+                        </div>
+                        <input
+                          type="text"
+                          name="first_name_bn"
+                          value={formData.first_name_bn}
+                          onChange={handleInput}
+                          className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-12 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                        />
+                      </div>
                     </div>
 
                     <div className="mb-4.5">
@@ -250,45 +240,6 @@ export default function EditDoctor() {
                         type="text"
                         name="last_name_bn"
                         value={formData.last_name_bn}
-                        onChange={handleInput}
-                        className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-                      />
-                    </div>
-
-                    <div className="mb-4.5">
-                      <label className="mb-2.5 block text-black dark:text-white">
-                        Phone
-                      </label>
-                      <input
-                        type="text"
-                        name="phone"
-                        value={formData.phone}
-                        onChange={handleInput}
-                        className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-                      />
-                    </div>
-
-                    <div className="mb-4.5">
-                      <label className="mb-2.5 block text-black dark:text-white">
-                        Email
-                      </label>
-                      <input
-                        type="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleInput}
-                        className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-                      />
-                    </div>
-
-                    <div className="mb-4.5">
-                      <label className="mb-2.5 block text-black dark:text-white">
-                        Reg. no (BMDC)
-                      </label>
-                      <input
-                        type="text"
-                        name="bmdc_reg_no"
-                        value={formData.bmdc_reg_no}
                         onChange={handleInput}
                         className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                       />
@@ -334,22 +285,16 @@ export default function EditDoctor() {
 
                     <div className="mb-4.5">
                       <label className="mb-2.5 block text-black dark:text-white">
-                        Date of Birth
+                        Phone{" "}
+                        <span className="text-xs italic text-bodydark2">
+                          (For internal use only. <strong>NOT</strong> visible
+                          in public)
+                        </span>
                       </label>
-                      <DatePickerInput
-                        name="dob"
-                        value={formData.dob}
-                        onChange={handleInput}
-                      />
-                    </div>
-
-                    <div className="mb-4.5">
-                      <label className="mb-2.5 block text-black dark:text-white">
-                        Address (EN)
-                      </label>
-                      <textarea
-                        name="address"
-                        value={formData.address}
+                      <input
+                        type="text"
+                        name="phone"
+                        value={formData.phone}
                         onChange={handleInput}
                         className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                       />
@@ -357,11 +302,12 @@ export default function EditDoctor() {
 
                     <div className="mb-4.5">
                       <label className="mb-2.5 block text-black dark:text-white">
-                        Address (BN)
+                        Email
                       </label>
-                      <textarea
-                        name="address_bn"
-                        value={formData.address_bn}
+                      <input
+                        type="email"
+                        name="email"
+                        value={formData.email}
                         onChange={handleInput}
                         className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                       />
@@ -369,7 +315,20 @@ export default function EditDoctor() {
 
                     <div className="mb-4.5">
                       <label className="mb-2.5 block text-black dark:text-white">
-                        Experiences (EN)
+                        Reg. no (BMDC)
+                      </label>
+                      <input
+                        type="text"
+                        name="bmdc_reg_no"
+                        value={formData.bmdc_reg_no}
+                        onChange={handleInput}
+                        className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                      />
+                    </div>
+
+                    <div className="mb-4.5">
+                      <label className="mb-2.5 block text-black dark:text-white">
+                        Year of Experience
                       </label>
                       <input
                         type="text"
@@ -379,22 +338,56 @@ export default function EditDoctor() {
                         className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                       />
                     </div>
-
-                    <div className="mb-4.5">
-                      <label className="mb-2.5 block text-black dark:text-white">
-                        Experiences (BN)
-                      </label>
-                      <input
-                        type="text"
-                        name="experience_bn"
-                        value={formData.experience_bn}
-                        onChange={handleInput}
-                        className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-                      />
-                    </div>
                   </div>
 
                   <div className="grid grid-cols-1  gap-x-8 gap-y-2">
+                    <div className="mb-4.5">
+                      <label className="mb-2.5 block text-black dark:text-white">
+                        Designations
+                      </label>
+                      <SelectWithSearch
+                        name="designation"
+                        value={formData.designation}
+                        onChange={handleInput}
+                        options={designationOptions}
+                      />
+                    </div>
+
+                    <div className="mb-4.5">
+                      <label className="mb-2.5 block text-black dark:text-white">
+                        Degrees
+                      </label>
+                      <CreatableSelect
+                        name="degree"
+                        value={formData.degree}
+                        onChange={handleInput}
+                      />
+                    </div>
+
+                    <div className="mb-4.5">
+                      <label className="mb-2.5 block text-black dark:text-white">
+                        Institute
+                      </label>
+                      <SelectWithSearch
+                        name="institute"
+                        value={formData.institute}
+                        onChange={handleInput}
+                        options={instituteOptions}
+                      />
+                    </div>
+
+                    <div className="mb-4.5">
+                      <label className="mb-2.5 block text-black dark:text-white">
+                        Specialities
+                      </label>
+                      <SelectWithSearchMulti
+                        name="speciality"
+                        value={formData.speciality}
+                        onChange={handleInput}
+                        options={specialityOptions}
+                      />
+                    </div>
+
                     <div className="mb-4.5">
                       <label className="mb-2.5 block text-black dark:text-white">
                         About doctor (EN)
@@ -416,54 +409,6 @@ export default function EditDoctor() {
                         value={formData.about_doctor_bn}
                         onChange={handleInput}
                         className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-                      />
-                    </div>
-
-                    <div className="mb-4.5">
-                      <label className="mb-2.5 block text-black dark:text-white">
-                        Specialities
-                      </label>
-                      <SelectWithSearchMulti
-                        name="speciality"
-                        value={formData.speciality}
-                        onChange={handleInput}
-                        options={specialityOptions}
-                      />
-                    </div>
-
-                    <div className="mb-4.5">
-                      <label className="mb-2.5 block text-black dark:text-white">
-                        Qualifications
-                      </label>
-                      <SelectWithSearchMulti
-                        name="qualification"
-                        value={formData.qualification}
-                        onChange={handleInput}
-                        options={specialityOptions}
-                      />
-                    </div>
-
-                    <div className="mb-4.5">
-                      <label className="mb-2.5 block text-black dark:text-white">
-                        Educations
-                      </label>
-                      <SelectWithSearchMulti
-                        name="education"
-                        value={formData.education}
-                        onChange={handleInput}
-                        options={specialityOptions}
-                      />
-                    </div>
-
-                    <div className="mb-4.5">
-                      <label className="mb-2.5 block text-black dark:text-white">
-                        Language
-                      </label>
-                      <SelectWithSearchMulti
-                        name="language"
-                        value={formData.language}
-                        onChange={handleInput}
-                        options={specialityOptions}
                       />
                     </div>
                   </div>

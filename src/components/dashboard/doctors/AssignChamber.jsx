@@ -29,6 +29,15 @@ import {
 } from "../../../helpers/utility";
 import Swal from "sweetalert2";
 
+const WEEKDAYS_OPTION = [
+  { id: "sat", label: "Sat", value: "sat" },
+  { id: "sun", label: "Sun", value: "sun" },
+  { id: "mon", label: "Mon", value: "mon" },
+  { id: "tue", label: "Tue", value: "tue" },
+  { id: "wed", label: "Wed", value: "wed" },
+  { id: "thu", label: "Thu", value: "thu" },
+  { id: "fri", label: "Fri", value: "fri" },
+];
 export default function AssignChamber() {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -38,7 +47,7 @@ export default function AssignChamber() {
       phone: "",
       schedule_start: "",
       schedule_end: "",
-      week_days: "",
+      week_days: [],
     },
   ];
   const [formData, setFormData] = useState(initFormData);
@@ -47,16 +56,6 @@ export default function AssignChamber() {
   const [notification, setNotification] = useState({ msg: null, type: null }); //[danger,success]
   const [pageLoaded, setPageLoaded] = useState(false);
   const [chamberOptions, setChamberOptions] = useState([]);
-
-  const WEEKDAYS_OPTION = [
-    { id: "sat", label: "Sat", value: "sat" },
-    { id: "sun", label: "Sun", value: "sun" },
-    { id: "mon", label: "Mon", value: "mon" },
-    { id: "tue", label: "Tue", value: "tue" },
-    { id: "wed", label: "Wed", value: "wed" },
-    { id: "thu", label: "Thu", value: "thu" },
-    { id: "fri", label: "Fri", value: "fri" },
-  ];
 
   useEffect(() => {
     const fetchForHelperData = async () => {
@@ -120,7 +119,7 @@ export default function AssignChamber() {
         phone: "",
         schedule_start: "",
         schedule_end: "",
-        week_days: "",
+        week_days: [],
       },
     ];
     setFormData(tempChambers);

@@ -21,6 +21,15 @@ import {
 import { parsePickerDate } from "../../../helpers/utility";
 import Swal from "sweetalert2";
 
+const WEEKDAYS_OPTION = [
+  { id: "sat", label: "Sat", value: "sat" },
+  { id: "sun", label: "Sun", value: "sun" },
+  { id: "mon", label: "Mon", value: "mon" },
+  { id: "tue", label: "Tue", value: "tue" },
+  { id: "wed", label: "Wed", value: "wed" },
+  { id: "thu", label: "Thu", value: "thu" },
+  { id: "fri", label: "Fri", value: "fri" },
+];
 export default function AddChamber() {
   const navigate = useNavigate();
   const initFormData = {
@@ -30,11 +39,10 @@ export default function AddChamber() {
     email: "",
     website: "",
     reg_no: "",
-    image: "",
     logo: "",
+    week_days: [],
     operating_hours: "",
     operating_hours_bn: "",
-    est: "",
     division_id: "",
     district_id: "",
     upazila_id: "",
@@ -43,15 +51,12 @@ export default function AddChamber() {
     latitude: "",
     longitude: "",
     services: [],
-    departments: [],
-    facilities: [],
   };
   const [formData, setFormData] = useState(initFormData);
   const [actionButtonLoading, setActionButtonLoading] = useState(false);
   const [notification, setNotification] = useState({ msg: null, type: null }); //[danger,success]
   const [pageLoaded, setPageLoaded] = useState(true);
   const [preview, setPreview] = useState({
-    image_preview: null,
     logo_preview: null,
   });
 
@@ -162,17 +167,12 @@ export default function AddChamber() {
 
   const parseFormData = () => {
     const data = new FormData();
-    const multiSelectItems = ["services", "departments", "facilities"];
-    const dateItems = ["est"];
+    const multiSelectItems = ["services", "week_days"];
     for (const item in formData) {
       if (multiSelectItems.includes(item)) {
         for (const selectItem of formData[item]) {
           data.append(`${item}[]`, selectItem.value);
         }
-        continue;
-      }
-      if (dateItems.includes(item)) {
-        data.append(item, parsePickerDate(formData[item]));
         continue;
       }
       data.append(item, formData[item]);
@@ -329,23 +329,14 @@ export default function AddChamber() {
 
                     <div className="mb-4.5">
                       <label className="mb-2.5 block text-black dark:text-white">
-                        Image
+                        Operating Days
                       </label>
-                      <input
-                        type="file"
-                        name="image"
-                        onChange={handleInputFile}
-                        className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                      <SelectWithSearchMulti
+                        name="week_days"
+                        onChange={handleInput}
+                        value={formData.week_days}
+                        options={WEEKDAYS_OPTION}
                       />
-                      {preview.image_preview && (
-                        <div className="py-2">
-                          <img
-                            src={preview.image_preview}
-                            alt="Image"
-                            className="h-20 w-auto rounded-sm"
-                          />
-                        </div>
-                      )}
                     </div>
 
                     <div className="mb-4.5">
@@ -371,17 +362,6 @@ export default function AddChamber() {
                         value={formData.operating_hours_bn}
                         onChange={handleInput}
                         className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-                      />
-                    </div>
-
-                    <div className="mb-4.5">
-                      <label className="mb-2.5 block text-black dark:text-white">
-                        Est. Date
-                      </label>
-                      <DatePickerInput
-                        name="est"
-                        value={formData.est}
-                        onChange={handleInput}
                       />
                     </div>
                   </div>
@@ -485,30 +465,6 @@ export default function AddChamber() {
                         value={formData.services}
                         onChange={handleInput}
                         options={chamberSericeOptions}
-                      />
-                    </div>
-
-                    <div className="mb-4.5">
-                      <label className="mb-2.5 block text-black dark:text-white">
-                        Departments
-                      </label>
-                      <SelectWithSearchMulti
-                        name="departments"
-                        value={formData.departments}
-                        onChange={handleInput}
-                        options={chamberDepartmentOptions}
-                      />
-                    </div>
-
-                    <div className="mb-4.5">
-                      <label className="mb-2.5 block text-black dark:text-white">
-                        Facilities
-                      </label>
-                      <SelectWithSearchMulti
-                        name="facilities"
-                        value={formData.facilities}
-                        onChange={handleInput}
-                        options={chamberFacilityOption}
                       />
                     </div>
                   </div>

@@ -1,9 +1,7 @@
 import { FaSave, FaSpinner } from "react-icons/fa";
 import SelectWithSearch from "../../ui/SelectWithSearch";
 import SelectWithSearchMulti from "../../ui/SelectWithSearchMulti";
-import DatePickerInput from "../../ui/DatePickerInput";
 import { useEffect, useState } from "react";
-import moment from "moment/moment";
 import {
   chamberEditFormHelperData,
   chamberUpdate,
@@ -43,7 +41,7 @@ export default function EditChamber() {
   const [formData, setFormData] = useState(initFormData);
   const [actionButtonLoading, setActionButtonLoading] = useState(false);
   const [notification, setNotification] = useState({ msg: null, type: null }); //[danger,success]
-  const [pageLoaded, setPageLoaded] = useState(true);
+  const [pageLoaded, setPageLoaded] = useState(false);
   const [preview, setPreview] = useState({
     logo_preview: null,
   });
@@ -64,7 +62,8 @@ export default function EditChamber() {
           setDivisionOptions(data.divisions);
           setDistrictOptions(data.districts);
           setUpazilaOptions(data.upazilas);
-          populateFormData(data.data);
+          setServiceOptions(data.services);
+          populateFormData(data.data, data.services);
         } else {
           Swal.fire({
             icon: "error",
@@ -86,9 +85,9 @@ export default function EditChamber() {
     fetchForHelperData();
   }, []);
 
-  const populateFormData = (serverData) => {
+  const populateFormData = (serverData, serviceOpt) => {
     const dropdownFormItems = {
-      services: chamberSericeOptions,
+      services: serviceOpt,
       week_days: WEEKDAYS_OPTION,
     };
     const copyFormData = { ...formData };

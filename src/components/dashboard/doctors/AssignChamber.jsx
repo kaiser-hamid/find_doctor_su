@@ -28,6 +28,7 @@ import {
   parsePickerDate,
 } from "../../../helpers/utility";
 import Swal from "sweetalert2";
+import CreatableSelect from "../../ui/CreatableSelect";
 
 const WEEKDAYS_OPTION = [
   { id: "sat", label: "Sat", value: "sat" },
@@ -44,7 +45,7 @@ export default function AssignChamber() {
   const initFormData = [
     {
       chamber_id: "",
-      phone: "",
+      phone: [],
       schedule_start: "",
       schedule_end: "",
       week_days: [],
@@ -116,7 +117,7 @@ export default function AssignChamber() {
       ...formData,
       {
         chamber_id: "",
-        phone: "",
+        phone: [],
         schedule_start: "",
         schedule_end: "",
         week_days: [],
@@ -138,7 +139,7 @@ export default function AssignChamber() {
       if (!chamber.chamber_id) {
         continue;
       }
-      const multiSelectItems = ["week_days"];
+      const multiSelectItems = ["phone", "week_days"];
       for (const item in chamber) {
         if (multiSelectItems.includes(item)) {
           for (const selectItem of chamber[item]) {
@@ -223,10 +224,10 @@ export default function AssignChamber() {
                 </div>
                 <form action="#">
                   <div className="p-6.5">
-                    <div className="grid md:grid-cols-3 grid-cols-1  gap-x-8 gap-y-2">
+                    <div className="grid md:grid-cols-3 grid-cols-1 gap-x-8 gap-y-2">
                       <div className="mb-4.5 col-span-1">
                         <label className="mb-2.5 block text-black dark:text-white">
-                          Chamber
+                          Center
                         </label>
                         <SelectWithSearch
                           onChange={handleInput}
@@ -264,28 +265,28 @@ export default function AssignChamber() {
                           placeholder="Select a time"
                         />
                       </div>
-                      <div className="mb-4.5 col-span-1">
-                        <label className="mb-2.5 block text-black dark:text-white">
-                          Phone No.
-                        </label>
-                        <input
-                          type="text"
-                          name={`phone:${i}`}
-                          onChange={handleInput}
-                          value={formData[i].phone}
-                          className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-                        />
-                      </div>
-                      <div className="mb-4.5 md:col-span-2 col-span-1">
-                        <label className="mb-2.5 block text-black dark:text-white">
-                          Weekdays
-                        </label>
-                        <SelectWithSearchMulti
-                          onChange={handleInput}
-                          value={formData[i].week_days}
-                          name={`week_days:${i}`}
-                          options={WEEKDAYS_OPTION}
-                        />
+                      <div className="md:col-span-3 col-span-1 flex  md:flex-row flex-col  gap-x-8 gap-y-2">
+                        <div className="mb-4.5 basis-1/2">
+                          <label className="mb-2.5 block text-black dark:text-white">
+                            Phone No.
+                          </label>
+                          <CreatableSelect
+                            name={`phone:${i}`}
+                            onChange={handleInput}
+                            value={formData[i].phone}
+                          />
+                        </div>
+                        <div className="mb-4.5 basis-1/2">
+                          <label className="mb-2.5 block text-black dark:text-white">
+                            Weekdays
+                          </label>
+                          <SelectWithSearchMulti
+                            onChange={handleInput}
+                            value={formData[i].week_days}
+                            name={`week_days:${i}`}
+                            options={WEEKDAYS_OPTION}
+                          />
+                        </div>
                       </div>
                     </div>
                   </div>

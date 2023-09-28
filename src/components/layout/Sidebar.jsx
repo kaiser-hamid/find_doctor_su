@@ -53,7 +53,7 @@ export default function Sidebar() {
           </div>
           <div>
             <h3 className="mb-4 ml-4 text-sm font-medium text-bodydark2 text-white">
-              Chamber Management
+              Center Management
             </h3>
 
             <ul className="mb-6 flex flex-col gap-1.5 pl-6">
@@ -63,7 +63,7 @@ export default function Sidebar() {
                   to="/dashboard/chambers/add"
                 >
                   <FaPlus />
-                  <span>Add a Chamber</span>
+                  <span>Add a Center</span>
                 </Link>
               </li>
               <li>
@@ -72,7 +72,7 @@ export default function Sidebar() {
                   to="/dashboard/chambers"
                 >
                   <FaClinicMedical />
-                  <span>Chambers</span>
+                  <span>Centers</span>
                 </Link>
               </li>
             </ul>

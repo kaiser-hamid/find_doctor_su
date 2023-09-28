@@ -76,7 +76,7 @@ export default function Chambers() {
         <div className="max-w-screen-2xl mx-auto p-4 md:p-6 2xl:p-10">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
             <h2 className="font-semibold text-title-md2 text-black dark:text-white">
-              Chamber List
+              Center List
             </h2>
 
             <div>
@@ -84,7 +84,7 @@ export default function Chambers() {
                 to="add"
                 className="inline-flex items-center justify-center rounded-md bg-black py-4 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
               >
-                <FaPlus /> Add a Chamber
+                <FaPlus /> Add a Center
               </Link>
             </div>
           </div>
@@ -96,13 +96,13 @@ export default function Chambers() {
                   <thead>
                     <tr className="bg-gray-2 text-left dark:bg-meta-4">
                       <th className="min-w-[220px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
-                        Chamber
+                        Center
                       </th>
                       <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
                         Contact Details
                       </th>
                       <th className="min-w-[120px] py-4 px-4 font-medium text-black dark:text-white">
-                        Operating Hours
+                        Operating Time
                       </th>
                       <th className="py-4 px-4 font-medium text-black text-center dark:text-white">
                         Actions
@@ -113,26 +113,32 @@ export default function Chambers() {
                     {pageData?.map((chamber) => (
                       <tr key={chamber._id}>
                         <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                          <p className="text-black dark:text-white font-semibold">
+                          <p className="text-xl text-black dark:text-white font-semibold">
                             {chamber.name} <br />
-                            <span className="text-xs text-bodydark2">
+                            <p className="text-sm text-bodydark2">
+                              Email:{" "}
+                              <span className="text-black font-normal">
+                                {chamber.email}
+                              </span>
+                            </p>
+                            <p className="text-sm text-bodydark2">
                               Phone:{" "}
-                              <a
-                                href={`tel:${chamber.phone}`}
-                                className="text-primary"
-                              >
+                              <span className="text-black font-normal">
                                 {chamber.phone}
-                              </a>
-                            </span>
+                              </span>
+                            </p>
                           </p>
                         </td>
                         <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                           <p className="text-black dark:text-white">
-                            Address: {chamber.address}
+                            <span className="text-bodydark2 font-semibold">
+                              Address:
+                            </span>{" "}
+                            {chamber.address}
                             <br />
-                            Email: {chamber.email}
-                            <br />
-                            Website:{" "}
+                            <span className="text-bodydark2 font-semibold">
+                              Website:
+                            </span>{" "}
                             <a
                               href={chamber.website}
                               className="text-primary"
@@ -144,6 +150,13 @@ export default function Chambers() {
                           </p>
                         </td>
                         <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                          <ul className="flex flex-wrap gap-2 text-xs font-semibold">
+                            {chamber.week_days?.map((item) => (
+                              <li className="capitalize bg-meta-3 text-white rounded-xl px-2 py-[2px]">
+                                {item}
+                              </li>
+                            ))}
+                          </ul>
                           <p className="text-black dark:text-white font-semibold">
                             {chamber.operating_hours}
                           </p>

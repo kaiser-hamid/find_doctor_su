@@ -7,13 +7,6 @@ import SubmitNotification from "../../ui/SubmitNotification.jsx";
 import HOC from "../../hoc/HOC.jsx";
 import { useNavigate, useParams } from "react-router-dom";
 import {
-  doctorEducationOption,
-  doctorExperienceOption,
-  doctorLangOption,
-  doctorQualificationOption,
-  doctorSpecialityOption,
-} from "../../../helpers/form-helper.jsx";
-import {
   getSelectedDrodownItems,
   parsePickerDate,
 } from "../../../helpers/utility";
@@ -50,6 +43,10 @@ export default function EditDoctor() {
   const [notification, setNotification] = useState({ msg: null, type: null }); //[danger,success]
   const [pageLoaded, setPageLoaded] = useState(false);
   const [preview, setPreview] = useState({ profile_picture_preview: null });
+
+  const [specialityOptions, setSpecialityOptions] = useState([]);
+  const [designationOptions, setDesignationOptions] = useState([]);
+  const [instituteOptions, setInstituteOptions] = useState([]);
 
   useEffect(() => {
     const fetchForHelperData = async () => {
@@ -430,7 +427,7 @@ export default function EditDoctor() {
                         name="speciality"
                         value={formData.speciality}
                         onChange={handleInput}
-                        options={doctorSpecialityOption}
+                        options={specialityOptions}
                       />
                     </div>
 
@@ -442,7 +439,7 @@ export default function EditDoctor() {
                         name="qualification"
                         value={formData.qualification}
                         onChange={handleInput}
-                        options={doctorQualificationOption}
+                        options={specialityOptions}
                       />
                     </div>
 
@@ -454,7 +451,7 @@ export default function EditDoctor() {
                         name="education"
                         value={formData.education}
                         onChange={handleInput}
-                        options={doctorEducationOption}
+                        options={specialityOptions}
                       />
                     </div>
 
@@ -466,7 +463,7 @@ export default function EditDoctor() {
                         name="language"
                         value={formData.language}
                         onChange={handleInput}
-                        options={doctorLangOption}
+                        options={specialityOptions}
                       />
                     </div>
                   </div>

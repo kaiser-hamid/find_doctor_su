@@ -6,35 +6,17 @@ import { useEffect, useState } from "react";
 import moment from "moment/moment";
 import {
   chamberEditFormHelperData,
-  chamberSave,
   chamberUpdate,
   districtDropdownByDivisionId,
-  divisionDropdown,
   upazilaDropdownByDistrictId,
 } from "../../../api/api.js";
 import SubmitNotification from "../../ui/SubmitNotification.jsx";
 import HOC from "../../hoc/HOC.jsx";
 import { useNavigate, useParams } from "react-router-dom";
-import {
-  chamberDepartmentOptions,
-  chamberFacilityOption,
-  chamberSericeOptions,
-} from "../../../helpers/form-helper.jsx";
-import {
-  getSelectedDrodownItems,
-  parsePickerDate,
-} from "../../../helpers/utility";
+import { WEEKDAYS_OPTION } from "../../../helpers/form-helper.jsx";
+import { getSelectedDrodownItems } from "../../../helpers/utility";
 import Swal from "sweetalert2";
 
-const WEEKDAYS_OPTION = [
-  { id: "sat", label: "Sat", value: "sat" },
-  { id: "sun", label: "Sun", value: "sun" },
-  { id: "mon", label: "Mon", value: "mon" },
-  { id: "tue", label: "Tue", value: "tue" },
-  { id: "wed", label: "Wed", value: "wed" },
-  { id: "thu", label: "Thu", value: "thu" },
-  { id: "fri", label: "Fri", value: "fri" },
-];
 export default function EditChamber() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -70,6 +52,7 @@ export default function EditChamber() {
   const [divisionOptions, setDivisionOptions] = useState([]);
   const [districtOptions, setDistrictOptions] = useState([]);
   const [upazilaOptions, setUpazilaOptions] = useState([]);
+  const [serviceOptions, setServiceOptions] = useState([]);
 
   useEffect(() => {
     const fetchForHelperData = async () => {
@@ -501,7 +484,7 @@ export default function EditChamber() {
                         name="services"
                         value={formData.services}
                         onChange={handleInput}
-                        options={chamberSericeOptions}
+                        options={serviceOptions}
                       />
                     </div>
                   </div>

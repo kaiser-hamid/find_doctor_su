@@ -22,7 +22,7 @@ import {
 import SubmitNotification from "../../ui/SubmitNotification.jsx";
 import HOC from "../../hoc/HOC.jsx";
 import { useNavigate, useParams } from "react-router-dom";
-import { doctorSpecialityOption } from "../../../helpers/form-helper.jsx";
+import { WEEKDAYS_OPTION } from "../../../helpers/form-helper.jsx";
 import {
   getSelectedDrodownItems,
   parsePickerDate,
@@ -30,15 +30,6 @@ import {
 import Swal from "sweetalert2";
 import CreatableSelect from "../../ui/CreatableSelect";
 
-const WEEKDAYS_OPTION = [
-  { id: "sat", label: "Sat", value: "sat" },
-  { id: "sun", label: "Sun", value: "sun" },
-  { id: "mon", label: "Mon", value: "mon" },
-  { id: "tue", label: "Tue", value: "tue" },
-  { id: "wed", label: "Wed", value: "wed" },
-  { id: "thu", label: "Thu", value: "thu" },
-  { id: "fri", label: "Fri", value: "fri" },
-];
 export default function AssignChamber() {
   const navigate = useNavigate();
   const { id } = useParams();

@@ -35,7 +35,7 @@ export const doctorUpdate = (data, id) =>
   });
 export const removeDoctor = (id) => http.delete(`admin/doctors/${id}`);
 export const doctorAddFormHelperData = () =>
-  http.get("admin/doctor/form-helper-data");
+  http.get("admin/doctors/form-helper-data");
 export const doctorEditFormHelperData = (id) =>
   http.get(`admin/doctors/${id}/edit`);
 export const assignChamberFormData = (id) =>

@@ -13,23 +13,10 @@ import {
 import SubmitNotification from "../../ui/SubmitNotification.jsx";
 import HOC from "../../hoc/HOC.jsx";
 import { useNavigate } from "react-router-dom";
-import {
-  chamberDepartmentOptions,
-  chamberFacilityOption,
-  chamberSericeOptions,
-} from "../../../helpers/form-helper.jsx";
+import { WEEKDAYS_OPTION } from "../../../helpers/form-helper.jsx";
 import { parsePickerDate } from "../../../helpers/utility";
 import Swal from "sweetalert2";
 
-const WEEKDAYS_OPTION = [
-  { id: "sat", label: "Sat", value: "sat" },
-  { id: "sun", label: "Sun", value: "sun" },
-  { id: "mon", label: "Mon", value: "mon" },
-  { id: "tue", label: "Tue", value: "tue" },
-  { id: "wed", label: "Wed", value: "wed" },
-  { id: "thu", label: "Thu", value: "thu" },
-  { id: "fri", label: "Fri", value: "fri" },
-];
 export default function AddChamber() {
   const navigate = useNavigate();
   const initFormData = {
@@ -64,6 +51,7 @@ export default function AddChamber() {
   const [divisionOptions, setDivisionOptions] = useState([]);
   const [districtOptions, setDistrictOptions] = useState([]);
   const [upazilaOptions, setUpazilaOptions] = useState([]);
+  const [serviceOptions, setServiceOptions] = useState([]);
 
   useEffect(() => {
     const fetchForHelperData = async () => {
@@ -464,7 +452,7 @@ export default function AddChamber() {
                         name="services"
                         value={formData.services}
                         onChange={handleInput}
-                        options={chamberSericeOptions}
+                        options={serviceOptions}
                       />
                     </div>
                   </div>

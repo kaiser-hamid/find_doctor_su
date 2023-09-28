@@ -61,7 +61,7 @@ export default function AddChamber() {
   });
 
   //dropdowns
-  const [divisionOptions, setDivisionOptions] = useState([7657]);
+  const [divisionOptions, setDivisionOptions] = useState([]);
   const [districtOptions, setDistrictOptions] = useState([]);
   const [upazilaOptions, setUpazilaOptions] = useState([]);
 

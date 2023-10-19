@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { FaEdit, FaPlus, FaTrashAlt } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import HOC from "../../hoc/HOC.jsx";
-import { chambers, doctors, removeChamber } from "../../../api/api.js";
+import { chambers, removeChamber } from "../../../api/api.js";
 import Swal from "sweetalert2";
 
 export default function Chambers() {

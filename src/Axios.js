@@ -1,4 +1,6 @@
 import axios from "axios";
+import data from "./config/data";
+
 const headers = {
   "Content-Type": "application/json",
 };
@@ -8,7 +10,7 @@ if (token) {
 }
 
 const http = axios.create({
-  baseURL: "http://localhost:3000/api/",
+  baseURL: data.api_url,
   headers,
 });
 

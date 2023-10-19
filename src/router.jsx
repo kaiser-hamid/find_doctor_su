@@ -13,6 +13,11 @@ import AssignChamber from "./components/dashboard/doctors/AssignChamber";
 import AddChamber from "./components/dashboard/chambers/AddChamber.jsx";
 import Chambers from "./components/dashboard/chambers/Chambers.jsx";
 import EditChamber from "./components/dashboard/chambers/EditChamber.jsx";
+import PageNotFound from "./components/ui/PageNotFound.jsx";
+
+const Ec = () => {
+  return <h2>Dan Dedaan!</h2>;
+};
 
 export default createBrowserRouter([
   {
@@ -80,5 +85,9 @@ export default createBrowserRouter([
         element: <EditChamber />,
       },
     ],
+  },
+  {
+    path: "*",
+    element: <PageNotFound />,
   },
 ]);

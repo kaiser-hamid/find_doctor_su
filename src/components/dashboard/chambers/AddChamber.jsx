@@ -1,7 +1,8 @@
-import { FaSave, FaSpinner } from "react-icons/fa";
+import { FaAsterisk, FaSave, FaSpinner } from "react-icons/fa";
 import SelectWithSearch from "../../ui/SelectWithSearch";
 import SelectWithSearchMulti from "../../ui/SelectWithSearchMulti";
 import DatePickerInput from "../../ui/DatePickerInput";
+import CreatableSelect from "../../ui/CreatableSelect";
 import { useEffect, useState } from "react";
 import moment from "moment/moment";
 import {
@@ -23,7 +24,7 @@ export default function AddChamber() {
   const initFormData = {
     name: "",
     name_bn: "",
-    phone: "",
+    phone: [],
     email: "",
     website: "",
     reg_no: "",
@@ -39,6 +40,8 @@ export default function AddChamber() {
     latitude: "",
     longitude: "",
     services: [],
+    about: "",
+    about_bn: "",
   };
   const [formData, setFormData] = useState(initFormData);
   const [actionButtonLoading, setActionButtonLoading] = useState(false);
@@ -157,7 +160,7 @@ export default function AddChamber() {
 
   const parseFormData = () => {
     const data = new FormData();
-    const multiSelectItems = ["services", "week_days"];
+    const multiSelectItems = ["phone", "services", "week_days"];
     for (const item in formData) {
       if (multiSelectItems.includes(item)) {
         for (const selectItem of formData[item]) {
@@ -220,7 +223,8 @@ export default function AddChamber() {
                   <div className="grid md:grid-cols-2 grid-cols-1  gap-x-8 gap-y-2">
                     <div className="mb-4.5">
                       <label className="mb-2.5 block text-black dark:text-white">
-                        Name (EN)
+                        Name (EN){" "}
+                        <FaAsterisk className="inline text-meta-1 text-sm" />
                       </label>
                       <input
                         type="text"
@@ -233,7 +237,8 @@ export default function AddChamber() {
 
                     <div className="mb-4.5">
                       <label className="mb-2.5 block text-black dark:text-white">
-                        Name (BN)
+                        Name (BN){" "}
+                        <FaAsterisk className="inline text-meta-1 text-sm" />
                       </label>
                       <input
                         type="text"
@@ -246,14 +251,13 @@ export default function AddChamber() {
 
                     <div className="mb-4.5">
                       <label className="mb-2.5 block text-black dark:text-white">
-                        Phone
+                        Phone{" "}
+                        <FaAsterisk className="inline text-meta-1 text-sm" />
                       </label>
-                      <input
-                        type="text"
+                      <CreatableSelect
                         name="phone"
-                        value={formData.phone}
                         onChange={handleInput}
-                        className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                        value={formData.phone}
                       />
                     </div>
 
@@ -319,7 +323,8 @@ export default function AddChamber() {
 
                     <div className="mb-4.5">
                       <label className="mb-2.5 block text-black dark:text-white">
-                        Operating Days
+                        Operating Days{" "}
+                        <FaAsterisk className="inline text-meta-1 text-sm" />
                       </label>
                       <SelectWithSearchMulti
                         name="week_days"
@@ -331,7 +336,8 @@ export default function AddChamber() {
 
                     <div className="mb-4.5">
                       <label className="mb-2.5 block text-black dark:text-white">
-                        Operating Hours (EN)
+                        Operating Hours (EN){" "}
+                        <FaAsterisk className="inline text-meta-1 text-sm" />
                       </label>
                       <input
                         type="text"
@@ -344,7 +350,8 @@ export default function AddChamber() {
 
                     <div className="mb-4.5">
                       <label className="mb-2.5 block text-black dark:text-white">
-                        Operating Hours (BN)
+                        Operating Hours (BN){" "}
+                        <FaAsterisk className="inline text-meta-1 text-sm" />
                       </label>
                       <input
                         type="text"
@@ -359,7 +366,8 @@ export default function AddChamber() {
                   <div className="grid md:grid-cols-3 grid-cols-1  gap-x-8 gap-y-2">
                     <div className="mb-4.5">
                       <label className="mb-2.5 block text-black dark:text-white">
-                        Division
+                        Division{" "}
+                        <FaAsterisk className="inline text-meta-1 text-sm" />
                       </label>
                       <SelectWithSearch
                         name="division_id"
@@ -371,7 +379,8 @@ export default function AddChamber() {
 
                     <div className="mb-4.5">
                       <label className="mb-2.5 block text-black dark:text-white">
-                        District
+                        District{" "}
+                        <FaAsterisk className="inline text-meta-1 text-sm" />
                       </label>
                       <SelectWithSearch
                         name="district_id"
@@ -383,7 +392,8 @@ export default function AddChamber() {
 
                     <div className="mb-4.5">
                       <label className="mb-2.5 block text-black dark:text-white">
-                        Area
+                        Area{" "}
+                        <FaAsterisk className="inline text-meta-1 text-sm" />
                       </label>
                       <SelectWithSearch
                         name="upazila_id"
@@ -397,7 +407,8 @@ export default function AddChamber() {
                   <div className="grid md:grid-cols-2 grid-cols-1  gap-x-8 gap-y-2">
                     <div className="mb-4.5">
                       <label className="mb-2.5 block text-black dark:text-white">
-                        Address (EN)
+                        Address (EN){" "}
+                        <FaAsterisk className="inline text-meta-1 text-sm" />
                       </label>
                       <textarea
                         name="address"
@@ -409,7 +420,8 @@ export default function AddChamber() {
 
                     <div className="mb-4.5">
                       <label className="mb-2.5 block text-black dark:text-white">
-                        Address (BN)
+                        Address (BN){" "}
+                        <FaAsterisk className="inline text-meta-1 text-sm" />
                       </label>
                       <textarea
                         name="address_bn"
@@ -446,6 +458,30 @@ export default function AddChamber() {
                     </div>
                   </div>
                   <div className="grid grid-cols-1  gap-x-8 gap-y-2">
+                    <div className="mb-4.5">
+                      <label className="mb-2.5 block text-black dark:text-white">
+                        About (EN)
+                      </label>
+                      <textarea
+                        name="about"
+                        value={formData.about}
+                        onChange={handleInput}
+                        className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                      />
+                    </div>
+
+                    <div className="mb-4.5">
+                      <label className="mb-2.5 block text-black dark:text-white">
+                        About (BN)
+                      </label>
+                      <textarea
+                        name="about_bn"
+                        value={formData.about_bn}
+                        onChange={handleInput}
+                        className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                      />
+                    </div>
+
                     <div className="mb-4.5">
                       <label className="mb-2.5 block text-black dark:text-white">
                         Services

@@ -1,4 +1,5 @@
 import {
+  FaAsterisk,
   FaPlusCircle,
   FaSave,
   FaSpinner,
@@ -59,16 +60,15 @@ export default function AssignChamber() {
           setChamberOptions(data.chambers);
           setDoctorName(data.doctor_name);
           if (data.doctor_chamber.length) {
-            const serverDataSync = data.doctor_chamber.map((item) => {
+            const serverDataSync = data.doctor_chamber?.map((item) => {
               return {
                 chamber_id: item.chamber_id,
-                phone: item.phone,
-                schedule_start: item.schedule_start,
-                schedule_end: item.schedule_end,
-                week_days: getSelectedDrodownItems(
-                  WEEKDAYS_OPTION,
-                  item.week_days
-                ),
+                phone: item.phone || [],
+                schedule_start: item.schedule_start || "",
+                schedule_end: item.schedule_end || "",
+                week_days: item.week_days
+                  ? getSelectedDrodownItems(WEEKDAYS_OPTION, item.week_days)
+                  : [],
               };
             });
             setFormData(serverDataSync);
@@ -194,7 +194,7 @@ export default function AssignChamber() {
             </h2>
           </div>
           {formData.map((chamber, i) => (
-            <div className="flex flex-col gap-9 my-8">
+            <div key={i} className="flex flex-col gap-9 my-8">
               <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
                 <div className="flex justify-between items-center border-b border-stroke py-4 px-6.5 dark:border-strokedark">
                   <h3 className="font-semibold text-black dark:text-white">
@@ -218,7 +218,8 @@ export default function AssignChamber() {
                     <div className="grid md:grid-cols-3 grid-cols-1 gap-x-8 gap-y-2">
                       <div className="mb-4.5 col-span-1">
                         <label className="mb-2.5 block text-black dark:text-white">
-                          Center
+                          Center{" "}
+                          <FaAsterisk className="inline text-meta-1 text-sm" />
                         </label>
                         <SelectWithSearch
                           onChange={handleInput}

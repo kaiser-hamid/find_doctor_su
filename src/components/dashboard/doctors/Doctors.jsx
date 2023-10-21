@@ -17,6 +17,7 @@ import {
   removeDoctor,
 } from "../../../api/api.js";
 import Swal from "sweetalert2";
+import Avatar from "../../ui/Avatar";
 
 export default function Doctors() {
   const [pageLoaded, setPageLoaded] = useState(false);
@@ -132,10 +133,9 @@ export default function Doctors() {
                     {pageData?.map((doctor) => (
                       <tr key={doctor._id}>
                         <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                          <img
+                          <Avatar
                             src={doctor.profile_picture}
-                            alt="Profile picture"
-                            className="h-18 rounded-md"
+                            sex={doctor.gender}
                           />
                         </td>
                         <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">

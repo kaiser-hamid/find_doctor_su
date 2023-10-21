@@ -1,4 +1,4 @@
-import { FaSave, FaSpinner } from "react-icons/fa";
+import { FaAsterisk, FaSave, FaSpinner } from "react-icons/fa";
 import SelectWithSearchMulti from "../../ui/SelectWithSearchMulti";
 import SelectWithSearch from "../../ui/SelectWithSearch";
 import CreatableSelect from "../../ui/CreatableSelect";
@@ -185,7 +185,8 @@ export default function EditDoctor() {
                   <div className="grid md:grid-cols-2 grid-cols-1  gap-x-8 gap-y-2">
                     <div className="mb-4.5">
                       <label className="mb-2.5 block text-black dark:text-white">
-                        First Name (EN)
+                        First Name (EN){" "}
+                        <FaAsterisk className="inline text-meta-1 text-sm" />
                       </label>
                       <div className="relative">
                         <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-5">
@@ -203,7 +204,8 @@ export default function EditDoctor() {
 
                     <div className="mb-4.5">
                       <label className="mb-2.5 block text-black dark:text-white">
-                        First Name (BN)
+                        First Name (BN){" "}
+                        <FaAsterisk className="inline text-meta-1 text-sm" />
                       </label>
                       <div className="relative">
                         <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-5">
@@ -221,7 +223,8 @@ export default function EditDoctor() {
 
                     <div className="mb-4.5">
                       <label className="mb-2.5 block text-black dark:text-white">
-                        Last Name (EN)
+                        Last Name (EN){" "}
+                        <FaAsterisk className="inline text-meta-1 text-sm" />
                       </label>
                       <input
                         type="text"
@@ -234,7 +237,8 @@ export default function EditDoctor() {
 
                     <div className="mb-4.5">
                       <label className="mb-2.5 block text-black dark:text-white">
-                        Last Name (BN)
+                        Last Name (BN){" "}
+                        <FaAsterisk className="inline text-meta-1 text-sm" />
                       </label>
                       <input
                         type="text"
@@ -268,7 +272,8 @@ export default function EditDoctor() {
 
                     <div className="mb-4.5">
                       <label className="mb-2.5 block text-black dark:text-white">
-                        Gender
+                        Gender{" "}
+                        <FaAsterisk className="inline text-meta-1 text-sm" />
                       </label>
                       <div className="md:flex md:gap-4" onChange={handleInput}>
                         {["Male", "Female", "Others"].map((g) => (
@@ -343,7 +348,8 @@ export default function EditDoctor() {
                   <div className="grid grid-cols-1  gap-x-8 gap-y-2">
                     <div className="mb-4.5">
                       <label className="mb-2.5 block text-black dark:text-white">
-                        Designations
+                        Designations{" "}
+                        <FaAsterisk className="inline text-meta-1 text-sm" />
                       </label>
                       <SelectWithSearch
                         name="designation"
@@ -355,7 +361,8 @@ export default function EditDoctor() {
 
                     <div className="mb-4.5">
                       <label className="mb-2.5 block text-black dark:text-white">
-                        Degrees
+                        Degrees{" "}
+                        <FaAsterisk className="inline text-meta-1 text-sm" />
                       </label>
                       <CreatableSelect
                         name="degree"
@@ -366,7 +373,8 @@ export default function EditDoctor() {
 
                     <div className="mb-4.5">
                       <label className="mb-2.5 block text-black dark:text-white">
-                        Institute
+                        Institute{" "}
+                        <FaAsterisk className="inline text-meta-1 text-sm" />
                       </label>
                       <SelectWithSearch
                         name="institute"
@@ -378,7 +386,8 @@ export default function EditDoctor() {
 
                     <div className="mb-4.5">
                       <label className="mb-2.5 block text-black dark:text-white">
-                        Specialities
+                        Specialities{" "}
+                        <FaAsterisk className="inline text-meta-1 text-sm" />
                       </label>
                       <SelectWithSearchMulti
                         name="speciality"
